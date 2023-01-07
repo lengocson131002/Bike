@@ -1,24 +1,40 @@
+image: docker
 stages:
-  - test
   - build
   - deploy
 
-test:
-  stage: test
-  script:
-    - echo "Testing"
-    - echo "Test Complete"
+services:
+  - docker:dind
+
+cache:
+  key: gradle-cache-key
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+  policy: pull
 
 gradle-build:
   stage: build
-  before_script:
-    - echo "Start building gradle"
+  image: openjdk:11
   script:
+    - chmod +x gradlew
     - ./gradlew build
+  only:
+    changes:
+      - "*.gradle"
+      - gradle.properties
+  cache:
+    key: gradle-cache-key
+    paths:
+      - .gradle/wrapper
+      - .gradle/caches
+    policy: push
   artifacts:
     paths:
       - build/libs/*.jar
+
 deploy:
   stage: deploy
   script:
-    - docker-compose up -d --build
+    - docker-compose --version
+    - docker-compose up --build
