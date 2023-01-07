@@ -5,10 +5,26 @@ stages:
 services:
   - docker:dind
 
+cache:
+  key: gradle-cache-key
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+  policy: pull
 
 gradle-build:
   image: openjdk:11
   stage: build
+  only:
+    changes:
+      - "*.gradle"
+      - gradle.properties
+  cache:
+    key: gradle-cache-key
+    paths:
+      - .gradle/wrapper
+      - .gradle/caches
+    policy: push
   before_script:
     - echo "Start building gradle"
   script:
@@ -17,8 +33,9 @@ gradle-build:
   artifacts:
     paths:
       - build/libs/*.jar
+
 deploy:
   stage: deploy
   script:
     - docker-compose --version
-    - docker-compose up -d --build
+    - docker-compose up --build
