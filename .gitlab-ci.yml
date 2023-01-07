@@ -17,7 +17,7 @@ services:
 build:
   stage: build
   script:
-    - chmod +400 ./gradlew
+    - chmod +x ./gradlew
     - ./gradlew build
   artifacts:
     paths:
