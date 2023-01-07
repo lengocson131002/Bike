@@ -43,11 +43,18 @@ deploy:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - source .${CI_COMMIT_REF_NAME}.env
+    - echo $DOCKER_REPO
+    - echo $APP_NAME
+    - echo $PORT
+    - echo $SERVER_IP
+    - echo $SERVER_USER
+    - echo $SERVER_SSH_KEY
+
   script:
     - ssh $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; 
       docker stop $APP_NAME; 
       docker system prune -a -f; 
       docker pull $DOCKER_REPO; 
-      docker container run -d --name $APP_NAME -p $PORT:8080; 
+      docker container run -d --name $APP_NAME -p $PORT:8080 $DOCKER_REPO; 
       docker logout"
 
