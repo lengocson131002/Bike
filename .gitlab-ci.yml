@@ -3,12 +3,13 @@ stages:
   - build
   - deploy
 
+before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+
 cache:
-  key: gradle-cache-key
   paths:
-    - .gradle/wrapper
-    - .gradle/caches
-  policy: pull
+     - .gradle/wrapper
+     - .gradle/caches
 
 services:
   - docker:dind
@@ -16,17 +17,8 @@ services:
 build:
   stage: build
   script:
+    - chmod +400 ./gradlew
     - ./gradlew build
-  only:
-    changes:
-      - "*.gradle"
-      - gradle.properties
-  cache:
-    key: gradle-cache-key
-    paths:
-      - .gradle/wrapper
-      - .gradle/caches
-    policy: push
   artifacts:
     paths:
       - build/libs/*.jar
