@@ -2,6 +2,8 @@ stages:
   - test
   - build
   - deploy
+services:
+  - docker:dind
 
 test:
   stage: test
@@ -14,6 +16,7 @@ gradle-build:
   before_script:
     - echo "Start building gradle"
   script:
+    - chmod +x gradlew
     - ./gradlew build
   artifacts:
     paths:
