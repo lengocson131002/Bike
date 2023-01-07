@@ -1,3 +1,4 @@
+image: docker
 stages:
   - build
   - deploy
@@ -19,4 +20,5 @@ gradle-build:
 deploy:
   stage: deploy
   script:
+    - docker-compose --version
     - docker-compose up -d --build
