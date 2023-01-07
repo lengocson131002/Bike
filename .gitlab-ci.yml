@@ -2,6 +2,7 @@ image: docker
 stages:
   - build
   - deploy
+
 services:
   - docker:dind
 
@@ -13,8 +14,8 @@ cache:
   policy: pull
 
 gradle-build:
-  image: openjdk:11
   stage: build
+  image: openjdk:11
   only:
     changes:
       - "*.gradle"
