@@ -12,6 +12,7 @@ test:
     - echo "Test Complete"
 
 gradle-build:
+  image: openjdk:11-jre-slim
   stage: build
   before_script:
     - echo "Start building gradle"
