@@ -1,10 +1,17 @@
+cache:
+  paths:
+     - .gradle/wrapper
+     - .gradle/caches
+
 services:
   - docker:19.03.7-dind
 stages:
   - build jar
   - build and push docker image
   - deploy
+
 before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
   - source .${CI_COMMIT_REF_NAME}.env
 
 build:
@@ -24,7 +31,7 @@ docker build:
     - docker build -t $DOCKER_REPO .
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
     - docker push $DOCKER_REPO
-    -
+
 deploy:
   image: ubuntu:latest
   stage: deploy
