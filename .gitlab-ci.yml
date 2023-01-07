@@ -16,8 +16,6 @@ cache:
 gradle-build:
   stage: build
   image: openjdk:11
-  before_script:
-    - echo "Start building gradle"
   script:
     - chmod +x gradlew
     - ./gradlew build
