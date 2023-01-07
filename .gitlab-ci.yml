@@ -3,9 +3,6 @@ stages:
   - build
   - deploy
 
-services:
-  - docker:dind
-
 cache:
   key: gradle-cache-key
   paths:
@@ -13,11 +10,12 @@ cache:
     - .gradle/caches
   policy: pull
 
-gradle-build:
+services:
+  - docker:dind
+
+build:
   stage: build
-  image: openjdk:11
   script:
-    - chmod +x gradlew
     - ./gradlew build
   only:
     changes:
