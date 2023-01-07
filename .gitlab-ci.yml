@@ -1,18 +1,12 @@
 stages:
-  - test
   - build
   - deploy
 services:
   - docker:dind
 
-test:
-  stage: test
-  script:
-    - echo "Testing"
-    - echo "Test Complete"
 
 gradle-build:
-  image: openjdk:11-jre-slim
+  image: openjdk:11
   stage: build
   before_script:
     - echo "Start building gradle"
