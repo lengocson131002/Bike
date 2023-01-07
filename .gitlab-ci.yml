@@ -19,5 +19,6 @@ gradle-build:
     paths:
       - build/libs/*.jar
 deploy:
+  stage: deploy
   script:
     - docker-compose up -d --build
