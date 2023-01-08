@@ -12,7 +12,6 @@ stages:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - source .${CI_COMMIT_REF_NAME}.env
 
 build:
   image: openjdk:11
@@ -44,14 +43,7 @@ deploy:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - source .${CI_COMMIT_REF_NAME}.env
-    - echo $DOCKER_REPO
-    - echo $APP_NAME
-    - echo $PORT
-    - echo $SERVER_IP
-    - echo $SERVER_USER
-    - echo $SERVER_SSH_KEY
-
+    
   script:
     - ssh $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; 
       docker stop $APP_NAME; 
