@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    @Value("${test.messsage}")
+    @Value("${test.message}")
     private String message;
 
     @Value("${test.secret}")
