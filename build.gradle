@@ -24,6 +24,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.keycloak:keycloak-spring-boot-starter'
 }
 
 tasks.named('test') {
