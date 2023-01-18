@@ -1,7 +1,7 @@
 cache:
   paths:
-     - .gradle/wrapper
-     - .gradle/caches
+    - .gradle/wrapper
+    - .gradle/caches
 
 services:
   - docker:19.03.7-dind
@@ -24,6 +24,11 @@ build:
   artifacts:
     paths:
       - build/libs/*.jar
+  tags:
+    - docker
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+
 
 docker build:
   image: docker:stable
@@ -32,25 +37,28 @@ docker build:
     - docker build -t $DOCKER_REPO .
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
     - docker push $DOCKER_REPO
+  tags:
+    - docker
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+
 
 deploy:
-  image: ubuntu:latest
   stage: deploy
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - echo $ENV_FILE
-    
   script:
-    - ssh $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; 
-      docker stop $APP_NAME; 
-      docker system prune -a -f; 
-      docker pull $DOCKER_REPO; 
-      echo $ENV_FILE;
-      docker container run -d --env-file $ENV_FILE --name $APP_NAME -p $PORT:8080 $DOCKER_REPO; 
-      docker logout"
+    - cp $ENV_FILE .env
+    - cat .env
+    - pwd
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
+    - docker stop $APP_NAME || true;
+    - docker system prune -a -f;
+    - docker pull $DOCKER_REPO;
+    - echo $ENV_FILE;
+    - docker container run -d --env-file .env --name $APP_NAME -p $PORT:8080 $DOCKER_REPO;
+    - docker logout
+  tags:
+    - shell
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+
 
