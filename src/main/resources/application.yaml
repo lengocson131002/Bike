@@ -1,2 +1,44 @@
+##########################
+# SERVER
+##########################
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+
+##########################
+# KEYCLOAK
+##########################
+keycloak:
+  auth-server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8180}
+  credentials:
+    secret: ${KEYCLOAK_CLIENT_SECRET:abcd1234}
+  resource: ${KEYCLOAK_CLIENT_ID:bike}
+  realm: ${KEYCLOAK_REALM:bike}
+keycloak-client:
+  username: ${KEYCLOAK_CLIENT_USERNAME:admin}
+  password: ${KEYCLOAK_CLIENT_PASSWORD:Aqswde123@}
+
+##########################
+# REDIS
+##########################
+redis:
+  host: ${REDIS_HOST:http://localhost}
+  port: ${REDIS_PORT:6379}
+  password: ${REDIS_PASSWORD:}
+
+##########################
+# DATASOURCE
+##########################
+spring:
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/bike}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:password}
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
