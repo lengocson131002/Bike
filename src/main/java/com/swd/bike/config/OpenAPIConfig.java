@@ -22,7 +22,7 @@ public class OpenAPIConfig {
 
     public final static String BEARER_SCHEME = "Bearer";
 
-    @Value("${springdoc.server-url:http://localhost:8080}")
+    @Value("${server.host}")
     String serverUrl;
 
     @Bean
