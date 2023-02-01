@@ -25,6 +25,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private NotificationType type;
 
     private String content;
@@ -35,5 +36,6 @@ public class Notification {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @Enumerated(EnumType.STRING)
     private NotificationStatus status = NotificationStatus.UN_READ;
 }

@@ -1,5 +1,6 @@
 package com.swd.bike.entity;
 
+import com.swd.bike.enums.PostStatus;
 import com.swd.bike.enums.TripRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class Post extends Auditable<String> {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private TripRole role;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -51,4 +53,6 @@ public class Post extends Auditable<String> {
     )
     private List<Account> applications;
 
+    @Enumerated(EnumType.STRING)
+    private PostStatus status;
 }

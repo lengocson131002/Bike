@@ -1,5 +1,6 @@
 package com.swd.bike.entity;
 
+import com.swd.bike.enums.StationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,6 @@ public class Station extends Auditable<String> {
     private String description;
     private Float longitude;
     private Float latitude;
+    @Enumerated(EnumType.STRING)
+    private StationStatus status;
 }
