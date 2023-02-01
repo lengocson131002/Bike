@@ -1,11 +1,8 @@
 package com.swd.bike.service;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swd.bike.dto.auth.response.AccessTokenResponseCustom;
-import com.swd.bike.dto.auth.response.TokenExchangeResponse;
-import com.swd.bike.service.interfaces.IKeycloakService;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Log4j2
-public class KeycloakService implements IKeycloakService {
+public class KeycloakService {
 
     @Value("${keycloak.auth-server-url}")
     String authUrl;
@@ -84,12 +81,8 @@ public class KeycloakService implements IKeycloakService {
                 .clientSecret(secretKey)
                 .build();
 
-        try {
-            AccessTokenResponse accessTokenResponse = keycloakUser.tokenManager().getAccessToken();
-            return new AccessTokenResponseCustom(accessTokenResponse);
-        } catch (Exception e) {
-            return null;
-        }
+        AccessTokenResponse accessTokenResponse = keycloakUser.tokenManager().getAccessToken();
+        return new AccessTokenResponseCustom(accessTokenResponse);
     }
 
     public AccessTokenResponseCustom exchangeToken(String subjectId) {
@@ -316,35 +309,4 @@ public class KeycloakService implements IKeycloakService {
         }
         return new ArrayList<>();
     }
-
-    public AccessTokenResponseCustom exchangeGoogleToken(String googleAccessToken) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("grant_type", "urn:ietf:params:oauth:grant-type:token-exchange");
-        map.add("subject_token_type", "urn:ietf:params:oauth:token-type:access_token");
-        map.add("client_id", clientId);
-        map.add("client_secret", secretKey);
-        map.add("subject_token", googleAccessToken);
-        map.add("subject_issuer", "google");
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        String url = authUrl + "/realms/" + realm + "/protocol/openid-connect/token";
-
-        ResponseEntity<String> keycloakResponse = restTemplate.postForEntity(url, request, String.class);
-        try {
-            if (keycloakResponse.getStatusCode() == HttpStatus.OK) {
-                TokenExchangeResponse tokenExchangeResponse = new ObjectMapper().readValue(keycloakResponse.getBody(), TokenExchangeResponse.class);
-                return new AccessTokenResponseCustom(tokenExchangeResponse);
-            }
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
-        }
-        return null;
-    }
-
-
 }
