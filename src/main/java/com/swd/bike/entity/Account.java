@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -23,11 +21,6 @@ public class Account {
     public static final String COLLECTION_NAME = "account";
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private String id;
     private String email;
     private String name;
@@ -35,4 +28,5 @@ public class Account {
     private String avatar;
     private String card;
     private Float averagePoint;
+    private Boolean isUpdated = false;
 }
