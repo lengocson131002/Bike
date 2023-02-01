@@ -2,17 +2,16 @@
 # SERVER
 ##########################
 server:
-  port: ${SERVER_PORT:1125}
-  host: ${SERVER_HOST:http://localhost:1125}
+  port: ${SERVER_PORT:8080}
 
 ##########################
 # KEYCLOAK
 ##########################
 keycloak:
-  auth-server-url: ${KEYCLOAK_SERVER_URL:https://52.74.214.224:8180/}
+  auth-server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8180}
   credentials:
-    secret: ${KEYCLOAK_CLIENT_SECRET:wDI5spnVvFkQIwwUg9jNbrZza4fU22aa}
-  resource: ${KEYCLOAK_CLIENT_ID:bike-client}
+    secret: ${KEYCLOAK_CLIENT_SECRET:abcd1234}
+  resource: ${KEYCLOAK_CLIENT_ID:bike}
   realm: ${KEYCLOAK_REALM:bike}
 keycloak-client:
   username: ${KEYCLOAK_CLIENT_USERNAME:admin}
@@ -33,7 +32,7 @@ spring:
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/bike}
     username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:1811}
+    password: ${DATASOURCE_PASSWORD:password}
   jpa:
     properties:
       hibernate:
@@ -43,15 +42,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-
-##########################
-# GOOGLE CLIENT
-##########################
-google:
-  client-id: ${GOOGLE_CLIENT_ID:112402231809-sju8kah621nj78kgtjsc51aqk25ule4d.apps.googleusercontent.com}
-  client-secret: ${GOOGLE_CLIENT_SECRET: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}
-  redirect-uri: ${GOOGLE_REDIRECT_URI:https://oidcdebugger.com/debug}
-  auth-server-url: ${GOOGLE_AUTH_URL:https://oauth2.googleapis.com/token}
-  valid-domain: ${GOOGLE_VALID_DOMAIN:fpt.edu.vn}
-
-

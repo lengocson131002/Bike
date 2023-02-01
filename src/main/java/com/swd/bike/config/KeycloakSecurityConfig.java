@@ -39,7 +39,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/swagger-resources/**",
-                        "/api/*/auth/**",
+                        "/api/auth/**",
                         "/api/**/public/**"
                 ).permitAll()
                 .anyRequest().authenticated()
