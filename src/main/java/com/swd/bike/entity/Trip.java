@@ -31,13 +31,14 @@ public class Trip extends Auditable<String> {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rider_id")
-    private Account rider;
+    @JoinColumn(name = "passenger_id")
+    private Account passenger;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grabber_id")
     private Account grabber;
 
+    @Enumerated(EnumType.STRING)
     private TripStatus status = TripStatus.CREATED;
 
     private LocalDateTime startAt;
@@ -48,24 +49,16 @@ public class Trip extends Auditable<String> {
 
     private String feedbackContent;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "id", column = @Column(name = "start_station_id")),
-            @AttributeOverride( name = "name", column = @Column(name = "start_station_name")),
-            @AttributeOverride( name = "address", column = @Column(name = "start_station_address")),
-            @AttributeOverride( name = "longitude", column = @Column(name = "start_station_longitude")),
-            @AttributeOverride( name = "latitude", column = @Column(name = "start_station_latitude"))
-    })
-    private TripStation startStation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "start_station_id")
+    private Station startStation;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "id", column = @Column(name = "end_station_id")),
-            @AttributeOverride( name = "name", column = @Column(name = "end_station_name")),
-            @AttributeOverride( name = "address", column = @Column(name = "end_station_address")),
-            @AttributeOverride( name = "longitude", column = @Column(name = "end_station_longitude")),
-            @AttributeOverride( name = "latitude", column = @Column(name = "end_station_latitude"))
-    })
-    private TripStation endStation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "end_station_id")
+    private Station endStation;
+
+    @OneToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
 }
