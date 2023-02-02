@@ -26,9 +26,8 @@ build:
       - build/libs/*.jar
   tags:
     - docker
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
-
+  only:
+    - develop
 
 docker build:
   image: docker:stable
@@ -39,8 +38,8 @@ docker build:
     - docker push $DOCKER_REPO
   tags:
     - docker
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+  only:
+    - develop
 
 
 deploy:
@@ -58,7 +57,6 @@ deploy:
     - docker logout
   tags:
     - shell
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
-
+  only:
+    - develop
 
