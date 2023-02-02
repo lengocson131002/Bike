@@ -5,8 +5,8 @@ import com.swd.bike.core.BaseResponseData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.keycloak.representations.AccessTokenResponse;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +14,15 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
+@Accessors(chain = true)
 public class AccessTokenResponseCustom extends BaseResponseData {
     protected String token;
 
     protected long expiresIn;
 
-    protected long refreshExpiresIn;
-
     protected String refreshToken;
+
+    protected long refreshExpiresIn;
 
     protected String tokenType;
 
@@ -51,5 +52,16 @@ public class AccessTokenResponseCustom extends BaseResponseData {
         this.otherClaims = accessTokenResponse.getOtherClaims();
         this.scope = accessTokenResponse.getScope();
         this.refreshExpiresIn = accessTokenResponse.getRefreshExpiresIn();
+    }
+
+    public AccessTokenResponseCustom(TokenExchangeResponse tokenExchangeResponse) {
+        this.token = tokenExchangeResponse.getAccessToken();
+        this.expiresIn = tokenExchangeResponse.getExpiresIn();
+        this.refreshToken = tokenExchangeResponse.getRefreshToken();
+        this.refreshExpiresIn = tokenExchangeResponse.getRefreshExpiresIn();
+        this.tokenType = tokenExchangeResponse.getTokenType();
+        this.notBeforePolicy = tokenExchangeResponse.getNotBeforePolicy();
+        this.sessionState = tokenExchangeResponse.getSessionState();
+        this.scope = tokenExchangeResponse.getScope();
     }
 }
