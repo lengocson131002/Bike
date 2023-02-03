@@ -17,6 +17,7 @@ keycloak:
   resource: ${KEYCLOAK_CLIENT_ID:}
   bearer-only: true
   use-resource-role-mappings: true
+  allow-any-hostname: true
 
 keycloak-client:
   username: ${KEYCLOAK_CLIENT_USERNAME:}
