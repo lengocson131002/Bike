@@ -9,12 +9,15 @@ server:
 # KEYCLOAK
 ##########################
 keycloak:
+  realm: ${KEYCLOAK_REALM:}
   auth-server-url: ${KEYCLOAK_SERVER_URL:}
+  ssl-required: ${KEYCLOAK_SSL_REQUIRED:external}
   credentials:
     secret: ${KEYCLOAK_CLIENT_SECRET:}
   resource: ${KEYCLOAK_CLIENT_ID:}
-  realm: ${KEYCLOAK_REALM:}
+  bearer-only: true
   use-resource-role-mappings: true
+
 keycloak-client:
   username: ${KEYCLOAK_CLIENT_USERNAME:}
   password: ${KEYCLOAK_CLIENT_PASSWORD:}
