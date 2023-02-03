@@ -8,6 +8,8 @@ public enum ResponseCode {
     INVALID_PARAM(3, "Invalid param"),
     INVALID_SESSION(4, "Invalid session"),
     UNHANDLED_REQUEST(5, "Unhandled request"),
+    THIRD_PARTY_ERROR(6, "Error when calling third party"),
+    JSON_PROCESSING_ERROR(7, "Error when processing JSON"),
 
     // Auth
     INVALID_USERNAME_OR_PASSWORD(10, "Invalid username or password"),

@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatusResponse extends BaseResponseData {
-    private Boolean success;
+    private Boolean success = true;
 }
