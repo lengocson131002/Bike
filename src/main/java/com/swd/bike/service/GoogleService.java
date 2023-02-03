@@ -5,6 +5,8 @@ package com.swd.bike.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swd.bike.dto.auth.response.GoogleAccessTokenResponse;
+import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.interfaces.IGoogleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +15,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
@@ -50,15 +53,18 @@ public class GoogleService implements IGoogleService {
 
         RestTemplate restTemplate = new RestTemplate();
         String url = authServerUrl;
-
-        ResponseEntity<String> googleResponse = restTemplate.postForEntity(url, request, String.class);
         try {
+            ResponseEntity<String> googleResponse = restTemplate.postForEntity(url, request, String.class);
             if (googleResponse.getStatusCode() == HttpStatus.OK) {
                 GoogleAccessTokenResponse accessTokenResponse = new ObjectMapper().readValue(googleResponse.getBody(), GoogleAccessTokenResponse.class);
                 return accessTokenResponse;
             }
+        } catch (HttpClientErrorException e) {
+            log.error(e.getMessage());
+            throw new InternalException(ResponseCode.THIRD_PARTY_ERROR);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
+            throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);
         }
         return null;
     }

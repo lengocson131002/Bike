@@ -8,7 +8,7 @@ import com.swd.bike.dto.auth.response.GoogleAccessTokenResponse;
 import com.swd.bike.entity.Account;
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.exception.InternalException;
-import com.swd.bike.repository.AccountRepository;
+import com.swd.bike.service.interfaces.IAccountService;
 import com.swd.bike.service.interfaces.IAuthService;
 import com.swd.bike.service.interfaces.IGoogleService;
 import com.swd.bike.service.interfaces.IKeycloakService;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class AuthService implements IAuthService {
     private final IKeycloakService keycloakService;
     private final IGoogleService googleService;
-    private final AccountRepository accountRepository;
+    private final IAccountService accountService;
 
 
     public AccessTokenResponseCustom loginByUsernameAndPassword(String username, String password) {
@@ -58,11 +58,6 @@ public class AuthService implements IAuthService {
             throw new InternalException(ResponseCode.AUTHENTICATION_FAILED_OUTSIDE_EMAIL);
         }
 
-        Account account = new Account()
-                .setName(googleInfo.getGivenName())
-                .setAvatar(googleInfo.getPicture())
-                .setEmail(googleInfo.getEmail());
-
         if (googleAccessToken == null) {
             throw new InternalException(ResponseCode.GOOGLE_AUTH_ERROR);
         }
@@ -70,8 +65,19 @@ public class AuthService implements IAuthService {
         AccessTokenResponseCustom accessTokenResponseCustom = keycloakService.exchangeGoogleToken(googleAccessToken.getAccessToken());
         try {
             AccessToken token = TokenVerifier.create(accessTokenResponseCustom.getToken(), AccessToken.class).getToken();
-            account.setId(token.getSubject());
-            accountRepository.save(account);
+            Account account = accountService.getById(token.getSubject());
+
+            //Create if there is no account
+            if (account == null) {
+                account = new Account()
+                        .setId(token.getSubject())
+                        .setName(googleInfo.getGivenName())
+                        .setAvatar(googleInfo.getPicture())
+                        .setEmail(googleInfo.getEmail())
+                        .setIsUpdated(false);
+
+                accountService.save(account);
+            }
         } catch (Exception e) {
             throw new InternalException(ResponseCode.AUTHENTICATION_FAILED);
         }
