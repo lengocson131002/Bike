@@ -43,7 +43,9 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/api/*/auth/**",
                         "/api/**/public/**"
                 ).permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/api/*/users/**")
+                .hasRole(Roles.USER.toString())
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new SimpleCORSFilter(), WebAsyncManagerIntegrationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
