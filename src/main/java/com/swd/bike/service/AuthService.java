@@ -7,6 +7,7 @@ import com.swd.bike.dto.auth.response.AccessTokenResponseCustom;
 import com.swd.bike.dto.auth.response.GoogleAccessTokenResponse;
 import com.swd.bike.entity.Account;
 import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.enums.Roles;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.interfaces.IAccountService;
 import com.swd.bike.service.interfaces.IAuthService;
@@ -63,6 +64,7 @@ public class AuthService implements IAuthService {
         }
 
         AccessTokenResponseCustom accessTokenResponseCustom = keycloakService.exchangeGoogleToken(googleAccessToken.getAccessToken());
+
         try {
             AccessToken token = TokenVerifier.create(accessTokenResponseCustom.getToken(), AccessToken.class).getToken();
             Account account = accountService.getById(token.getSubject());
@@ -75,7 +77,7 @@ public class AuthService implements IAuthService {
                         .setAvatar(googleInfo.getPicture())
                         .setEmail(googleInfo.getEmail())
                         .setIsUpdated(false);
-
+                keycloakService.addUserRole(account.getId(), Roles.USER.name());
                 accountService.save(account);
             }
         } catch (Exception e) {

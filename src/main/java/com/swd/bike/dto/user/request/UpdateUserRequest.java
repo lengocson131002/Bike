@@ -16,7 +16,7 @@ public class UpdateUserRequest extends BaseRequestData {
     @JsonDeserialize(using = TrimString.class)
     private String name;
     @JsonDeserialize(using = TrimString.class)
-    @Pattern(regexp = "(^$)|(^(84|0[3|5|7|8|9])+([0-9]{8})$)")
+    @Pattern(regexp = "^(84|0[3|5|7|8|9])+([0-9]{8})$")
     private String phone;
     @JsonDeserialize(using = TrimString.class)
     private String avatar;

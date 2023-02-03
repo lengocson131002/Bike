@@ -16,6 +16,7 @@ import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.AccessTokenResponse;
@@ -34,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -361,5 +363,51 @@ public class KeycloakService implements IKeycloakService {
         return null;
     }
 
+    public boolean addUserRole(String userId, String roleName) {
+        try {
+            ClientRepresentation clientRep = keycloakAdmin
+                    .realm(realm)
+                    .clients()
+                    .findByClientId(clientId)
+                    .get(0);
+            RolesResource rolesResource = keycloakAdmin.realm(realm).clients().get(clientRep.getId()).roles();
+            if (!getAllRoles().contains(roleName)) {
+                RoleRepresentation roleRep = new RoleRepresentation();
+                roleRep.setName(roleName);
+                rolesResource.create(roleRep);
+            }
+
+            List<RoleRepresentation> roleToAdd = new LinkedList<>();
+            roleToAdd.add(rolesResource
+                    .get(roleName)
+                    .toRepresentation()
+            );
+
+            UserResource userResource = keycloakAdmin.realm(realm).users().get(userId);
+            userResource.roles().clientLevel(clientRep.getId()).add(roleToAdd);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<String> getAllRoles() {
+        ClientRepresentation clientRep = keycloakAdmin
+                .realm(realm)
+                .clients()
+                .findByClientId(clientId)
+                .get(0);
+        List<String> availableRoles = keycloakAdmin
+                .realm(realm)
+                .clients()
+                .get(clientRep.getId())
+                .roles()
+                .list()
+                .stream()
+                .map(role -> role.getName())
+                .collect(Collectors.toList());
+        return availableRoles;
+    }
 
 }

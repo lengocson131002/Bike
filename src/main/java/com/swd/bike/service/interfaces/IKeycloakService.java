@@ -4,7 +4,6 @@ import com.swd.bike.dto.auth.response.AccessTokenResponseCustom;
 import lombok.SneakyThrows;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -41,4 +40,8 @@ public interface IKeycloakService {
     List<UserRepresentation> getAllUsers();
 
     AccessTokenResponseCustom exchangeGoogleToken(String googleAccessToken);
+
+    boolean addUserRole(String userId, String roleName);
+
+    List<String> getAllRoles();
 }

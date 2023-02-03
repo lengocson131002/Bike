@@ -14,6 +14,7 @@ keycloak:
     secret: ${KEYCLOAK_CLIENT_SECRET:}
   resource: ${KEYCLOAK_CLIENT_ID:}
   realm: ${KEYCLOAK_REALM:}
+  use-resource-role-mappings: true
 keycloak-client:
   username: ${KEYCLOAK_CLIENT_USERNAME:}
   password: ${KEYCLOAK_CLIENT_PASSWORD:}
