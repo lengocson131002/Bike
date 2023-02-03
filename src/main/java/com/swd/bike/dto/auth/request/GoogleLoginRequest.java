@@ -15,4 +15,6 @@ import javax.validation.constraints.NotBlank;
 public class GoogleLoginRequest extends BaseRequestData {
     @NotBlank
     private String code;
+    @NotBlank
+    private String redirectUri;
 }

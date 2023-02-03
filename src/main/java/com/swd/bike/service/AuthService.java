@@ -51,8 +51,8 @@ public class AuthService implements IAuthService {
         return accessTokenResponseCustom;
     }
 
-    public AccessTokenResponseCustom loginByGoogle(String code) {
-        GoogleAccessTokenResponse googleAccessToken = googleService.getAccessToken(code);
+    public AccessTokenResponseCustom loginByGoogle(String code, String redirectUri) {
+        GoogleAccessTokenResponse googleAccessToken = googleService.getAccessToken(code, redirectUri);
         GoogleIdToken googleInfo = GoogleIdToken.get(googleAccessToken.getIdToken());
 
         if (!googleService.isValidEmail(googleInfo.getHd())) {
@@ -83,7 +83,7 @@ public class AuthService implements IAuthService {
         } catch (Exception e) {
             throw new InternalException(ResponseCode.AUTHENTICATION_FAILED);
         }
-        return accessTokenResponseCustom;
+        return refreshToken(accessTokenResponseCustom.getToken());
     }
 
     public void logout(String refreshToken) {

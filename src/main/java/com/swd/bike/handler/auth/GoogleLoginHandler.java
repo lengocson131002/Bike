@@ -14,6 +14,6 @@ public class GoogleLoginHandler extends RequestHandler<GoogleLoginRequest, Acces
 
     @Override
     public AccessTokenResponseCustom handle(GoogleLoginRequest request) {
-        return authService.loginByGoogle(request.getCode());
+        return authService.loginByGoogle(request.getCode(), request.getRedirectUri());
     }
 }

@@ -51,7 +51,6 @@ spring:
 google:
   client-id: ${GOOGLE_CLIENT_ID:}
   client-secret: ${GOOGLE_CLIENT_SECRET:}
-  redirect-uri: ${GOOGLE_REDIRECT_URI:}
   auth-server-url: ${GOOGLE_AUTH_URL:}
   valid-domain: ${GOOGLE_VALID_DOMAIN:fpt.edu.vn}
 
