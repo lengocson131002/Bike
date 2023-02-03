@@ -33,12 +33,10 @@ public class GoogleService implements IGoogleService {
 
     @Value("${google.client-secret}")
     private String clientSecret;
-    @Value("${google.redirect-uri}")
-    private String redirectUri;
     @Value("${google.valid-domain}")
     private String validDomain;
 
-    public GoogleAccessTokenResponse getAccessToken(String code) {
+    public GoogleAccessTokenResponse getAccessToken(String code, String redirectUri) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
