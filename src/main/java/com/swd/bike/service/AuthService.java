@@ -83,7 +83,7 @@ public class AuthService implements IAuthService {
         } catch (Exception e) {
             throw new InternalException(ResponseCode.AUTHENTICATION_FAILED);
         }
-        return refreshToken(accessTokenResponseCustom.getToken());
+        return refreshToken(accessTokenResponseCustom.getRefreshToken());
     }
 
     public void logout(String refreshToken) {
