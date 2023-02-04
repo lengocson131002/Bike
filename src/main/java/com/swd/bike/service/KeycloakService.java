@@ -250,7 +250,7 @@ public class KeycloakService implements IKeycloakService {
             }
         } catch (HttpClientErrorException e) {
             log.error(e.getMessage());
-            throw new InternalException(ResponseCode.THIRD_PARTY_ERROR);
+            throw new InternalException(ResponseCode.THIRD_PARTY_KEYCLOAK_ERROR);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
             throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);
@@ -355,7 +355,7 @@ public class KeycloakService implements IKeycloakService {
             }
         } catch (HttpClientErrorException e) {
             log.error(e.getMessage());
-            throw new InternalException(ResponseCode.THIRD_PARTY_ERROR);
+            throw new InternalException(ResponseCode.THIRD_PARTY_KEYCLOAK_ERROR);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
             throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);

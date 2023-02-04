@@ -8,7 +8,7 @@ public enum ResponseCode {
     INVALID_PARAM(3, "Invalid param"),
     INVALID_SESSION(4, "Invalid session"),
     UNHANDLED_REQUEST(5, "Unhandled request"),
-    THIRD_PARTY_ERROR(6, "Error when calling third party"),
+    THIRD_PARTY_KEYCLOAK_ERROR(6, "Error when calling third party [Keycloak]"),
     JSON_PROCESSING_ERROR(7, "Error when processing JSON"),
 
     // Auth
@@ -17,9 +17,11 @@ public enum ResponseCode {
     REFRESH_TOKEN_INVALID(12, "Invalid refresh token"),
     AUTHENTICATION_FAILED(13,"Authentication failed"),
     AUTHENTICATION_FAILED_OUTSIDE_EMAIL(14,"Authentication failed: Outside email"),
+    CODE_INVALID(15,"Invalid code"),
 
     // User
     USER_NOT_FOUND(20, "User not found"),
+    USER_MISSING_FIELD(21, "User missing required field"),
 
     ;
 
