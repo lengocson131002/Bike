@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -40,6 +41,8 @@ public class Post extends Auditable<String> {
     @JoinColumn(name = "end_station_id")
     private Station endStation;
 
+    private LocalDateTime startTime;
+
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -54,5 +57,5 @@ public class Post extends Auditable<String> {
     private List<Account> applications;
 
     @Enumerated(EnumType.STRING)
-    private PostStatus status;
+    private PostStatus status = PostStatus.CREATED;
 }

@@ -44,22 +44,16 @@ public class KeycloakService implements IKeycloakService {
 
     @Value("${keycloak.auth-server-url}")
     String authUrl;
-
-    @Value("${keycloak.credentials.secret}")
-    private String secretKey;
-
-    @Value("${keycloak.resource}")
-    private String clientId;
-
     @Value("${keycloak.realm}")
     String realm;
-
     @Value("${keycloak-client.username}")
     String username;
-
     @Value("${keycloak-client.password}")
     String password;
-
+    @Value("${keycloak.credentials.secret}")
+    private String secretKey;
+    @Value("${keycloak.resource}")
+    private String clientId;
     private Keycloak keycloakAdmin;
 
     @Bean
@@ -78,22 +72,23 @@ public class KeycloakService implements IKeycloakService {
     }
 
     public AccessTokenResponseCustom getUserJWT(String username, String password) {
-        Keycloak keycloakUser = KeycloakBuilder.builder()
-                .serverUrl(authUrl)
-                .realm(realm)
-                .username(username)
-                .password(password)
-                .grantType(CredentialRepresentation.PASSWORD)
-                .clientId(clientId)
-                .clientSecret(secretKey)
-                .build();
-
         try {
+            Keycloak keycloakUser = KeycloakBuilder.builder()
+                    .serverUrl(authUrl)
+                    .realm(realm)
+                    .username(username)
+                    .password(password)
+                    .grantType(CredentialRepresentation.PASSWORD)
+                    .clientId(clientId)
+                    .clientSecret(secretKey)
+                    .build();
+
             AccessTokenResponse accessTokenResponse = keycloakUser.tokenManager().getAccessToken();
             return new AccessTokenResponseCustom(accessTokenResponse);
-        } catch (Exception e) {
-            return null;
+        } catch (Exception ex) {
+            log.error("Login failed. {}", ex.getMessage());
         }
+        return null;
     }
 
     public AccessTokenResponseCustom exchangeToken(String subjectId) {

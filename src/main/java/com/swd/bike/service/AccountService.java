@@ -1,6 +1,4 @@
-
 package com.swd.bike.service;
-
 
 import com.swd.bike.entity.Account;
 import com.swd.bike.repository.AccountRepository;
@@ -16,9 +14,22 @@ public class AccountService implements IAccountService {
 
     private final AccountRepository accountRepository;
 
+    @Override
+    public Account findAccount(String id) {
+        if (id == null) {
+            return null;
+        }
+        return accountRepository
+                .findById(id)
+                .orElse(null);
+    }
+
+    @Override
     public Account save(Account account) {
         return accountRepository.save(account);
     }
+
+    @Override
     public Account getById(String id) {
         return accountRepository.findById(id).orElse(null);
     }

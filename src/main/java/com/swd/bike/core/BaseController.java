@@ -2,8 +2,6 @@ package com.swd.bike.core;
 
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.exception.InternalException;
-import com.swd.bike.service.AccountService;
-import com.swd.bike.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class BaseController {
         if (securityContext == null ||
                 securityContext.getAuthentication() == null ||
                 StringUtils.isBlank(securityContext.getAuthentication().getName())) {
-            throw new InternalException(ResponseCode.AUTHENTICATION_FAILED);
+            throw new InternalException(ResponseCode.UNAUTHORIZED_REQUEST);
         }
         return securityContext.getAuthentication().getName();
     }
