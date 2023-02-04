@@ -1,9 +1,9 @@
 package com.swd.bike.service.interfaces;
 
 import com.swd.bike.entity.Account;
-import org.springframework.stereotype.Service;
 
 public interface IAccountService {
+    Account findAccount(String id);
 
     Account save(Account account);
 

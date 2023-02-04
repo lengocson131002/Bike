@@ -1,7 +1,6 @@
 package com.swd.bike.entity;
 
 
-import com.swd.bike.enums.TripRole;
 import com.swd.bike.enums.TripStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +43,8 @@ public class Trip extends Auditable<String> {
     private LocalDateTime startAt;
 
     private LocalDateTime finishAt;
+
+    private LocalDateTime cancelAt;
 
     private Float feedbackPoint;
 

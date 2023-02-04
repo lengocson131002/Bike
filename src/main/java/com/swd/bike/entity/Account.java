@@ -1,14 +1,13 @@
 package com.swd.bike.entity;
 
+import com.swd.bike.enums.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -28,5 +27,7 @@ public class Account {
     private String avatar;
     private String card;
     private Float averagePoint;
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
     private Boolean isUpdated = false;
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,5 +28,13 @@ public class Station extends Auditable<String> {
     private Float longitude;
     private Float latitude;
     @Enumerated(EnumType.STRING)
-    private StationStatus status;
+    private StationStatus status = StationStatus.ACTIVE;
+
+    @ManyToMany
+    @JoinTable(
+            name = "station_next_station",
+            joinColumns = @JoinColumn(name = "station_id"),
+            inverseJoinColumns = @JoinColumn(name = "next_station_id"))
+    private List<Station> nextStation;
+
 }

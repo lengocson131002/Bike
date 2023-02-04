@@ -1,5 +1,9 @@
 package com.swd.bike.service;
 
+import com.swd.bike.entity.Account;
+import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.exception.InternalException;
+import com.swd.bike.service.interfaces.IAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
@@ -10,7 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Using to get current log in user
@@ -20,6 +26,8 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class ContextService {
+
+    private final IAccountService accountService;
 
     @Value("${keycloak.resource}")
     private String keycloakClientId;
@@ -54,6 +62,7 @@ public class ContextService {
 
     /**
      * Get subject ID (Keycloak UserID)
+     *
      * @return
      */
     public Optional<String> getLoginUserId() {
@@ -75,4 +84,18 @@ public class ContextService {
         return new HashSet<>();
     }
 
+    public Account getLoggedInUser() {
+        try {
+            AccessToken loggedInToken = getLoggedInAccessToken();
+            if (loggedInToken == null) {
+                log.info("Unauthorized request");
+                return null;
+            }
+            String accountId = loggedInToken.getSubject();
+            return accountService.findAccount(accountId);
+        } catch (Exception ex) {
+            log.error("Get current login user failed, {}", ex.getMessage());
+            throw new InternalException(ResponseCode.UNAUTHORIZED_REQUEST);
+        }
+    }
 }
