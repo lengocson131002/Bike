@@ -8,6 +8,7 @@ import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.interfaces.IAccountService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +33,12 @@ public class UpdateUserHandler extends RequestHandler<UpdateUserRequest, StatusR
         }
         if (request.getCard() != null) {
             account.setCard(request.getCard());
+        }
+        if (StringUtils.isBlank(account.getPhone()) ||
+                StringUtils.isBlank(account.getEmail()) ||
+                StringUtils.isBlank(account.getName()) ||
+                StringUtils.isBlank(account.getAvatar())) {
+            throw new InternalException(ResponseCode.USER_MISSING_FIELD);
         }
         account.setIsUpdated(true);
         accountService.save(account);

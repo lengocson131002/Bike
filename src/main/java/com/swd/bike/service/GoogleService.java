@@ -15,7 +15,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
@@ -57,9 +56,6 @@ public class GoogleService implements IGoogleService {
                 GoogleAccessTokenResponse accessTokenResponse = new ObjectMapper().readValue(googleResponse.getBody(), GoogleAccessTokenResponse.class);
                 return accessTokenResponse;
             }
-        } catch (HttpClientErrorException e) {
-            log.error(e.getMessage());
-            throw new InternalException(ResponseCode.THIRD_PARTY_ERROR);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
             throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);

@@ -1,11 +1,12 @@
 package com.swd.bike.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.exception.CustomException;
 import com.swd.bike.exception.InternalException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.nio.file.AccessDeniedException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,5 +86,18 @@ public class BaseExceptionController {
         }
 
         return new ResponseEntity<>(new ResponseBase<>(1, exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({HttpClientErrorException.class})
+    public ResponseEntity<?> handleHttpClientError(HttpClientErrorException exception) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            System.out.println(exception.getResponseBodyAsString());
+            CustomException result = mapper.readValue(exception.getResponseBodyAsString(),
+                    CustomException.class);
+            return ResponseEntity.ok(new ResponseBase<>(1, String.format("%s: %s", result.getError(), result.getErrorDescription())));
+        } catch (JsonProcessingException e) {
+            throw new InternalException(ResponseCode.THIRD_PARTY_ERROR);
+        }
     }
 }
