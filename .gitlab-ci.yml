@@ -53,7 +53,7 @@ deploy:
     - docker system prune -a -f;
     - docker pull $DOCKER_REPO;
     - echo $ENV_FILE;
-    - docker container run -d --env-file .env --name $APP_NAME -p $PORT:8080 $DOCKER_REPO;
+    - docker container run -d --env-file .env --network $DOCKER_NETWORK --name $APP_NAME -p $PORT:8080 $DOCKER_REPO;
     - docker logout
   tags:
     - shell
