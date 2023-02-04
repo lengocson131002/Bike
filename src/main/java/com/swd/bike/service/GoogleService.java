@@ -59,7 +59,7 @@ public class GoogleService implements IGoogleService {
             }
         } catch (HttpClientErrorException e) {
             log.error(e.getMessage());
-            throw new InternalException(ResponseCode.THIRD_PARTY_ERROR);
+            throw new InternalException(ResponseCode.CODE_INVALID);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
             throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);
