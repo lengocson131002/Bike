@@ -30,7 +30,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.ws.rs.core.Response;
@@ -248,9 +247,6 @@ public class KeycloakService implements IKeycloakService {
                 TokenExchangeResponse tokenExchangeResponse = new ObjectMapper().readValue(keycloakResponse.getBody(), TokenExchangeResponse.class);
                 return new AccessTokenResponseCustom(tokenExchangeResponse);
             }
-        } catch (HttpClientErrorException e) {
-            log.error(e.getMessage());
-            throw new InternalException(ResponseCode.THIRD_PARTY_KEYCLOAK_ERROR);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
             throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);
@@ -353,9 +349,6 @@ public class KeycloakService implements IKeycloakService {
                 TokenExchangeResponse tokenExchangeResponse = new ObjectMapper().readValue(keycloakResponse.getBody(), TokenExchangeResponse.class);
                 return new AccessTokenResponseCustom(tokenExchangeResponse);
             }
-        } catch (HttpClientErrorException e) {
-            log.error(e.getMessage());
-            throw new InternalException(ResponseCode.THIRD_PARTY_KEYCLOAK_ERROR);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
             throw new InternalException(ResponseCode.JSON_PROCESSING_ERROR);
