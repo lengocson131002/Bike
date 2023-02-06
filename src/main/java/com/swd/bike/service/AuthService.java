@@ -6,6 +6,7 @@ import com.swd.bike.dto.auth.dtos.GoogleIdToken;
 import com.swd.bike.dto.auth.response.AccessTokenResponseCustom;
 import com.swd.bike.dto.auth.response.GoogleAccessTokenResponse;
 import com.swd.bike.entity.Account;
+import com.swd.bike.enums.AccountStatus;
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.enums.Roles;
 import com.swd.bike.exception.InternalException;
@@ -76,7 +77,8 @@ public class AuthService implements IAuthService {
                         .setName(googleInfo.getGivenName())
                         .setAvatar(googleInfo.getPicture())
                         .setEmail(googleInfo.getEmail())
-                        .setIsUpdated(false);
+                        .setIsUpdated(false)
+                        .setStatus(AccountStatus.ACTIVE);
                 keycloakService.addUserRole(account.getId(), Roles.USER.name());
                 accountService.save(account);
             }

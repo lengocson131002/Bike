@@ -12,6 +12,7 @@ public enum ResponseCode {
     UNHANDLED_REQUEST(5, "Unhandled request"),
     THIRD_PARTY_ERROR(6, "Error when calling third party"),
     JSON_PROCESSING_ERROR(7, "Error when processing JSON"),
+    RESPONSE_CODE_INVALID(8, "Invalid response code"),
 
     // Auth
     INVALID_USERNAME_OR_PASSWORD(10, "Invalid username or password"),
