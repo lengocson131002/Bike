@@ -66,7 +66,7 @@ public class CreatePostHandler extends RequestHandler<CreatePostRequest, PostRes
         }
 
         Post post = new Post();
-        post.setTitle(request.getTitle())
+        post
                 .setRole(request.getRole())
                 .setDescription(request.getDescription())
                 .setStartStation(startStation)

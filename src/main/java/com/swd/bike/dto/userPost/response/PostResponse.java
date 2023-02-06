@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 public class PostResponse extends BaseResponseData {
     private Long id;
     private TripRole role;
-    private String title;
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime createdAt;
@@ -38,7 +37,6 @@ public class PostResponse extends BaseResponseData {
 
         this.id = post.getId();
         this.role = post.getRole();
-        this.title = post.getTitle();
         this.status = post.getStatus();
         this.description = post.getDescription();
         this.startTime = post.getStartTime();

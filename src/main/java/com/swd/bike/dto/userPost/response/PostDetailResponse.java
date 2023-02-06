@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class PostDetailResponse extends BaseResponseData {
     private Long id;
     private TripRole role;
-    private String title;
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime createdAt;
@@ -38,7 +37,6 @@ public class PostDetailResponse extends BaseResponseData {
 
         this.id = post.getId();
         this.role = post.getRole();
-        this.title = post.getTitle();
         this.status = post.getStatus();
         this.description = post.getDescription();
         this.startTime = post.getStartTime();

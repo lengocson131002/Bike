@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class TripDetailResponse extends BaseResponseData {
     private Long id;
-    private String title;
     private TripStatus status;
     private String description;
     private LocalDateTime createdAt;
@@ -43,7 +42,6 @@ public class TripDetailResponse extends BaseResponseData {
         assert trip != null;
 
         this.id = trip.getId();
-        this.title = trip.getTitle();
         this.status = trip.getStatus();
         this.description = trip.getDescription();
         this.createdAt = trip.getCreatedAt();

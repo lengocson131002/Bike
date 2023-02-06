@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TripResponse extends BaseResponseData {
     private Long id;
-    private String title;
     private TripStatus status;
     private String description;
     private LocalDateTime createdAt;
@@ -34,7 +33,6 @@ public class TripResponse extends BaseResponseData {
     public TripResponse(Trip trip)  {
         assert trip != null;
         this.id = trip.getId();
-        this.title = trip.getTitle();
         this.status = trip.getStatus();
         this.description = trip.getDescription();
         this.createdAt = trip.getCreatedAt();

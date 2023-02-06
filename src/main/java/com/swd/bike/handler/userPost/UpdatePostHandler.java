@@ -51,12 +51,6 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
             throw new InternalException(ResponseCode.POST_ERROR_INVALID_STATUS);
         }
 
-        // Update title
-        String title = request.getTitle();
-        if (StringUtils.isNotBlank(title)) {
-            post.setTitle(title);
-        }
-
         // Update description
         String description = request.getDescription();
         if (StringUtils.isNotBlank(description)) {

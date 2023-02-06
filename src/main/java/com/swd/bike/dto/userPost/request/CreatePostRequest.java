@@ -26,10 +26,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CreatePostRequest extends BaseRequestData {
-    @NotBlank
-    @Size(max = 250)
-    @JsonDeserialize(using = TrimString.class)
-    private String title;
 
     @NotNull
     private Long startStationId;
