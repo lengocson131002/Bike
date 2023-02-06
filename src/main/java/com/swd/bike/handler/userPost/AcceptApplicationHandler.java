@@ -72,7 +72,6 @@ public class AcceptApplicationHandler extends RequestHandler<AcceptApplicationRe
                 .setGrabber(grabber)
                 .setPassenger(passenger)
                 .setStatus(TripStatus.CREATED)
-                .setTitle(post.getTitle())
                 .setDescription(post.getDescription())
                 .setPost(post)
                 .setStartStation(post.getStartStation())

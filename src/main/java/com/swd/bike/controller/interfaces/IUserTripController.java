@@ -28,6 +28,10 @@ public interface IUserTripController {
     @Operation(summary = "Get all my trips")
     ResponseEntity<ResponseBase<PageResponse<TripResponse>>> getAllTrips(@ParameterObject GetAllTripsRequest request);
 
+    @GetMapping("/ongoing")
+    @Operation(summary = "Get on-going trip")
+    ResponseEntity<ResponseBase<TripDetailResponse>> getCurrentTrip();
+
     @GetMapping("/{id}")
     @Operation(summary = "Get trip information")
     ResponseEntity<ResponseBase<TripDetailResponse>> getTrip(@PathVariable Long id);

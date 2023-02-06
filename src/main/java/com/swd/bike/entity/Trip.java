@@ -25,8 +25,6 @@ public class Trip extends Auditable<String> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

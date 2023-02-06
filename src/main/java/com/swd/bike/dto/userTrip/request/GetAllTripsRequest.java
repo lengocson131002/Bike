@@ -52,7 +52,7 @@ public class GetAllTripsRequest extends PagingFilterRequest {
             List<Predicate> predicates = new ArrayList<>();
 
             if (StringUtils.isNotBlank(query)) {
-                predicates.add(cb.like(cb.lower(root.get(Trip_.TITLE)), "%" + query.trim().toLowerCase() + "%"));
+                predicates.add(cb.like(cb.lower(root.get(Trip_.DESCRIPTION)), "%" + query.trim().toLowerCase() + "%"));
             }
 
             if (Objects.nonNull(startStationId)) {

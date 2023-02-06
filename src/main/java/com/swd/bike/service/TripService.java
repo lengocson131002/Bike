@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,9 +35,10 @@ public class TripService implements ITripService {
         if (account == null) {
             return null;
         }
-        return tripRepository
-                .findFirstByStatus(account.getId(), TripStatus.ON_GOING)
-                .orElse(null);
+        List<Trip> onGoingTrips = tripRepository.findByAccountIdAndStatus(account.getId(), TripStatus.ON_GOING);
+        return onGoingTrips != null && !onGoingTrips.isEmpty()
+                ? onGoingTrips.get(0)
+                : null;
     }
 
     @Override

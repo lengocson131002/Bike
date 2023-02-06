@@ -23,6 +23,12 @@ public class UserTripController extends BaseController implements IUserTripContr
     }
 
     @Override
+    public ResponseEntity<ResponseBase<TripDetailResponse>> getCurrentTrip() {
+        GetOnGoingTripRequest request = new GetOnGoingTripRequest();
+        return this.execute(request);
+    }
+
+    @Override
     public ResponseEntity<ResponseBase<TripDetailResponse>> getTrip(Long id) {
         GetTripRequest request = new GetTripRequest();
         request.setId(id);
