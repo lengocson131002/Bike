@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = Notification.COLLECTION_NAME)
-public class Notification {
+public class Notification extends Auditable<String> {
     public static final String COLLECTION_NAME = "notification";
 
     @Id
