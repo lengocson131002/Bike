@@ -18,4 +18,6 @@ public interface IStationService {
     List<Station> findAllByIds(List<Long> ids);
     boolean isActiveStation(Station station);
     Station findStation(Long id);
+    List<Station> getAllStations();
+    List<Station> getAllStations(Long fromStationId);
 }

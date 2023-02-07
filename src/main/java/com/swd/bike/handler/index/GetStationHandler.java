@@ -5,28 +5,53 @@ import com.swd.bike.dto.common.ListResponse;
 import com.swd.bike.dto.index.GetStationsRequest;
 import com.swd.bike.dto.userPost.response.StationResponse;
 import com.swd.bike.entity.Station;
-import com.swd.bike.repository.StationRepository;
+import com.swd.bike.service.interfaces.IStationService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class GetStationHandler extends RequestHandler<GetStationsRequest, ListResponse<StationResponse>> {
 
-    private final StationRepository stationRepository;
+    private final IStationService stationService;
 
     @Override
+    @Transactional
     public ListResponse<StationResponse> handle(GetStationsRequest request) {
-        List<Station> stations = stationRepository.findAll(request.getSpecifications());
+        Long fromStationId = request.getFromStationId();
+        List<Station> stations = Objects.nonNull(fromStationId)
+                ? stationService.getAllStations(fromStationId)
+                : stationService.getAllStations();
+
+        String query = normalize(request.getQuery());
+        if (StringUtils.isNotBlank(query)) {
+            stations = stations.stream().filter(
+                    station -> StringUtils.containsIgnoreCase(station.getName(), query)
+                            || StringUtils.containsIgnoreCase(station.getAddress(), query)
+                            || StringUtils.containsIgnoreCase(station.getDescription(), query)
+            ).collect(Collectors.toList());
+        }
+
+
         ListResponse<StationResponse> response = new ListResponse<>();
-        response.setItems(
-                stations.stream()
-                        .map(StationResponse::new)
-                        .collect(Collectors.toList())
-        );
+        response.setItems(stations.stream()
+                .map(StationResponse::new)
+                .collect(Collectors.toList()));
+
         return response;
     }
+
+    private String normalize(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str.trim().toLowerCase();
+    }
+
 }
