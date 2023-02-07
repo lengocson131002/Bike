@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HealthController extends BaseController {
 
-    @GetMapping("/api/v1/public/health")
+    @GetMapping("/api/cms/v1/health")
     public ResponseEntity<ResponseBase<StatusResponse>> checkHealth() {
         return this.execute(new HealthCheckRequest());
     }

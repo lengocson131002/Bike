@@ -38,7 +38,7 @@ spring:
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/bike}
     username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:}
+    password: ${DATASOURCE_PASSWORD:013845}
   jpa:
     properties:
       hibernate:

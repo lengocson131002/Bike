@@ -1,6 +1,6 @@
 package com.swd.bike.config;
 
-import com.swd.bike.enums.Roles;
+import com.swd.bike.enums.Role;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -47,7 +47,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/api/**/public/**"
                 ).permitAll()
                 .antMatchers("/api/*/users/**")
-                .hasRole(Roles.USER.toString())
+                .hasRole(Role.USER.toString())
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new SimpleCORSFilter(), WebAsyncManagerIntegrationFilter.class)

@@ -8,7 +8,7 @@ import com.swd.bike.dto.auth.response.GoogleAccessTokenResponse;
 import com.swd.bike.entity.Account;
 import com.swd.bike.enums.AccountStatus;
 import com.swd.bike.enums.ResponseCode;
-import com.swd.bike.enums.Roles;
+import com.swd.bike.enums.Role;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.interfaces.IAccountService;
 import com.swd.bike.service.interfaces.IAuthService;
@@ -73,13 +73,14 @@ public class AuthService implements IAuthService {
             //Create if there is no account
             if (account == null) {
                 account = new Account()
+                        .setRole(Role.USER)
                         .setId(token.getSubject())
                         .setName(googleInfo.getGivenName())
                         .setAvatar(googleInfo.getPicture())
                         .setEmail(googleInfo.getEmail())
                         .setIsUpdated(false)
                         .setStatus(AccountStatus.ACTIVE);
-                keycloakService.addUserRole(account.getId(), Roles.USER.name());
+                keycloakService.addUserRole(account.getId(), Role.USER.name());
                 accountService.save(account);
             }
         } catch (Exception e) {

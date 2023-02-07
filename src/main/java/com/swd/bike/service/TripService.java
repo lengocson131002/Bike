@@ -2,8 +2,10 @@ package com.swd.bike.service;
 
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Trip;
-import com.swd.bike.enums.TripRole;
+import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.enums.TripStatus;
+import com.swd.bike.exception.InternalException;
+import com.swd.bike.repository.AccountRepository;
 import com.swd.bike.repository.TripRepository;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +21,40 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TripService implements ITripService {
-
     private final TripRepository tripRepository;
+    private final AccountRepository accountRepository;
+
+    @Override
+    public List<Trip> getTripByFilter(Specification<Trip> specification) {
+        List<Trip> trips = tripRepository.findAll(specification);
+        return trips != null ? trips : new ArrayList<>();
+    }
+
+    @Override
+    public List<Trip> getTripByMemberId(String id, boolean isGrabber) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new InternalException(ResponseCode.ACCOUNT_NOT_FOUND));
+        if (isGrabber) {
+            return tripRepository.findTripsByGrabber(account);
+        } else {
+            return tripRepository.findTripsByPassenger(account);
+        }
+    }
+
+    @Override
+    public boolean checkExists(Specification<Trip> specification) {
+        return tripRepository.exists(specification);
+    }
+
+    @Override
+    public Trip getDetailById(Long id) {
+        return tripRepository.findById(id)
+                .orElseThrow(() -> new InternalException(ResponseCode.TRIP_ERROR_NOT_FOUND));
+    }
+
+    @Override
+    public Page<Trip> getTripPageByFilter(Specification<Trip> specification, Pageable pageable) {
+        return tripRepository.findAll(specification, pageable);
+    }
 
     @Override
     public Page<Trip> getAllTrip(Specification<Trip> spec, Pageable pageable) {

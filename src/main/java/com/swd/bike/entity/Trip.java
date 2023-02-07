@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @Table(name = Trip.COLLECTION_NAME)
 public class Trip extends Auditable<String> {
+
     public static final String COLLECTION_NAME = "trip";
 
     @Id

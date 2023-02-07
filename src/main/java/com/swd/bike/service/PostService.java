@@ -23,6 +23,11 @@ public class PostService implements IPostService {
     private final PostRepository postRepository;
 
     @Override
+    public boolean isExistWithActiveStation(Specification<Post> specification) {
+        return postRepository.exists(specification);
+    }
+
+    @Override
     public Page<Post> getAllPosts(Specification<Post> spec, Pageable pageable) {
         if (pageable == null) {
             return new PageImpl<>(new ArrayList<>());

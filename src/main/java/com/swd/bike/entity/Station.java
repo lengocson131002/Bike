@@ -1,11 +1,9 @@
 package com.swd.bike.entity;
 
 import com.swd.bike.enums.StationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,10 +11,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Accessors(chain = true)
+@SuperBuilder(toBuilder = true)
 @Table(name = Station.COLLECTION_NAME)
+@EqualsAndHashCode(callSuper = true)
 public class Station extends Auditable<String> {
     public static final String COLLECTION_NAME = "station";
     @Id
@@ -29,12 +29,10 @@ public class Station extends Auditable<String> {
     private Float latitude;
     @Enumerated(EnumType.STRING)
     private StationStatus status = StationStatus.ACTIVE;
-
     @ManyToMany
     @JoinTable(
-            name = "station_next_station",
+            name = "route",
             joinColumns = @JoinColumn(name = "station_id"),
             inverseJoinColumns = @JoinColumn(name = "next_station_id"))
     private List<Station> nextStation;
-
 }
