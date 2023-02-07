@@ -13,6 +13,7 @@ public enum ResponseCode {
     THIRD_PARTY_ERROR(6, "Error when calling third party"),
     JSON_PROCESSING_ERROR(7, "Error when processing JSON"),
     RESPONSE_CODE_INVALID(8, "Invalid response code"),
+    CONFLICT(9, "Key is conflict"),
 
     // Auth
     INVALID_USERNAME_OR_PASSWORD(10, "Invalid username or password"),
@@ -40,14 +41,22 @@ public enum ResponseCode {
     USER_NOT_FOUND(30, "User not found"),
     USER_MISSING_FIELD(31, "User missing required field"),
 
-
     // Trip
     TRIP_ERROR_NOT_FOUND(40, "Trip not found"),
     TRIP_ERROR_INVALID_STATUS(41, "Trip's current status is invalid for this action"),
     TRIP_ERROR_INVALID_ACCESS(42, "Current logged in user has no access on the trip in this action"),
     TRIP_ERROR_ON_GOING_TRIP(43, "User is busy. There is an on going trip"),
     TRIP_ERROR_EXISTED_FEEDBACK(44, "Existed feedback"),
-    TRIP_ERROR_CAN_NOT_CANCEL_TRIP(45, "You must cancel the trip at least " + BaseConstant.TRIP_CANCEL_THRESHOLD_IN_MINUTES + " minutes before the start time");
+    TRIP_ERROR_CAN_NOT_CANCEL_TRIP(45, "You must cancel the trip at least " + BaseConstant.TRIP_CANCEL_THRESHOLD_IN_MINUTES + " minutes before the start time"),
+
+    //Account
+    ACCOUNT_NOT_FOUND(64, "Account is not found"),
+
+    //Station
+    STATION_NOT_FOUND(51, "Station is not found"),
+    STATION_IS_USED(52, "Station is used"),
+    STATION_IS_INACTIVE(53, "Station is inactive"),
+    ;
 
     private final int code;
     private final String message;

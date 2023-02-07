@@ -5,12 +5,11 @@ import com.swd.bike.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.jdbc.core.metadata.PostgresTableMetaDataProvider;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface IPostService {
+    boolean isExistWithActiveStation(Specification<Post> specification);
     /**
      * Filter and paging posts
      * @param spec

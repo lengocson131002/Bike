@@ -1,6 +1,7 @@
 package com.swd.bike.entity;
 
 import com.swd.bike.enums.AccountStatus;
+import com.swd.bike.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = Account.COLLECTION_NAME)
-public class Account {
+public class Account extends Auditable<String> {
+
     public static final String COLLECTION_NAME = "account";
 
     @Id
@@ -26,6 +28,8 @@ public class Account {
     private String phone;
     private String avatar;
     private String card;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private Float averagePoint;
     @Enumerated(EnumType.STRING)
     private AccountStatus status;

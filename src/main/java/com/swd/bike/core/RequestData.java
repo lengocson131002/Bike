@@ -1,5 +1,7 @@
 package com.swd.bike.core;
 
+import lombok.experimental.SuperBuilder;
+
 public class RequestData {
     protected RequestData(RequestDataBuilder<?, ?> b) {
     }

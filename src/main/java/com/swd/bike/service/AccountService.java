@@ -1,10 +1,15 @@
 package com.swd.bike.service;
 
 import com.swd.bike.entity.Account;
+import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.exception.InternalException;
 import com.swd.bike.repository.AccountRepository;
 import com.swd.bike.service.interfaces.IAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,5 +37,14 @@ public class AccountService implements IAccountService {
     @Override
     public Account getById(String id) {
         return accountRepository.findById(id).orElse(null);
+    }
+    @Override
+    public Account getDetailById(String id) {
+        return accountRepository.findById(id).orElseThrow(() -> new InternalException(ResponseCode.ACCOUNT_NOT_FOUND));
+    }
+
+    @Override
+    public Page<Account> getAccountsByFilter(Specification<Account> specification, Pageable pageable) {
+        return accountRepository.findAll(specification, pageable);
     }
 }

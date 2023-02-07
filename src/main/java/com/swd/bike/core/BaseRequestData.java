@@ -1,9 +1,10 @@
 package com.swd.bike.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-
 public class BaseRequestData extends RequestData {
     @JsonIgnore
     private String accessToken;

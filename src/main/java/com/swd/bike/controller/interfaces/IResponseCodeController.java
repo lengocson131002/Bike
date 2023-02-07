@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "[Public] Response Code Controller", description = "Thao tác với mã lỗi")
-@RequestMapping("/api/v1/public/responseCodes")
+@RequestMapping("/api/v1/responseCodes")
 @SecurityRequirement(name = OpenAPIConfig.BEARER_SCHEME)
 public interface IResponseCodeController {
     @Operation(
