@@ -63,6 +63,8 @@ dependencies {
     // Jackson
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1'
 
+    // Aws
+    implementation 'com.amazonaws:aws-java-sdk:1.12.399'
 
 }
 
