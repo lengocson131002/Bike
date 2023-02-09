@@ -70,4 +70,17 @@ public class StationService implements IStationService {
         return stationRepository.findById(id)
                 .orElse(null);
     }
+
+    @Override
+    public List<Station> getAllStations() {
+        return stationRepository.findAll();
+    }
+
+    @Override
+    public List<Station> getAllStations(Long fromStationId) {
+        if (fromStationId == null) {
+            return getAllStations();
+        }
+        return stationRepository.findByFromStationId(fromStationId);
+    }
 }

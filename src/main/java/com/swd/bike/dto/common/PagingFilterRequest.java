@@ -25,9 +25,9 @@ public class PagingFilterRequest extends BaseRequestData {
     @Max(200)
     private Integer pageSize = 20;
 
-    private Sort.Direction sortDir = Sort.Direction.ASC;
+    private Sort.Direction sortDir = Sort.Direction.DESC;
 
-    private String sortBy = "id";
+    private String sortBy = "createdAt";
 
     public Pageable getPageable() {
         return page != null
