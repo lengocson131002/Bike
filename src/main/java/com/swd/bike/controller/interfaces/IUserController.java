@@ -4,35 +4,40 @@ import com.swd.bike.config.OpenAPIConfig;
 import com.swd.bike.core.ResponseBase;
 import com.swd.bike.dto.common.StatusResponse;
 import com.swd.bike.dto.user.request.UpdateUserRequest;
+import com.swd.bike.dto.user.response.UserDetailResponse;
 import com.swd.bike.dto.user.response.UserResponse;
+import com.swd.bike.dto.vehicle.request.RegisterVehicleRequest;
+import com.swd.bike.dto.vehicle.response.VehicleResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @Tag(name = "User Controller", description = "Thao tác với users")
 @RequestMapping(value = "/api/v1/users")
+@SecurityRequirement(name = OpenAPIConfig.BEARER_SCHEME)
 public interface IUserController {
 
-    @Operation(
-            summary = "Get User Info",
-            description = "- Lấy thông tin user"
-    )
-    @GetMapping("/getInfo")
-    @SecurityRequirement(name = OpenAPIConfig.BEARER_SCHEME)
-    ResponseEntity<ResponseBase<UserResponse>> getUserInfo();
+    @Operation(summary = "Get current user info")
+    @GetMapping("/me")
+    ResponseEntity<ResponseBase<UserDetailResponse>> getUserInfo();
 
-    @Operation(
-            summary = "Update User",
-            description = "- Cập nhật thông tin user"
-    )
-    @PutMapping()
-    @SecurityRequirement(name = OpenAPIConfig.BEARER_SCHEME)
-    ResponseEntity<ResponseBase<StatusResponse>> update(@Valid @RequestBody UpdateUserRequest request);
+    @Operation(summary = "Update User")
+    @PutMapping("/me")
+    ResponseEntity<ResponseBase<StatusResponse>> updateUserInfo(@Valid @RequestBody UpdateUserRequest request);
+
+    @Operation(summary = "Register vehicle")
+    @PostMapping("/me/vehicles")
+    ResponseEntity<ResponseBase<StatusResponse>> registerVehicle(@Valid @RequestBody RegisterVehicleRequest request);
+
+    @Operation(summary = "Get current user's vehicle")
+    @GetMapping("/me/vehicles")
+    ResponseEntity<ResponseBase<VehicleResponse>> getVehicle();
+
+    @Operation(summary = "Get user by id")
+    @GetMapping("/{id}")
+    ResponseEntity<ResponseBase<UserResponse>> getUser(@PathVariable String id);
 }
