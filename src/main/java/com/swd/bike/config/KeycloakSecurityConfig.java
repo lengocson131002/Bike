@@ -34,6 +34,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         super.configure(http);
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .cors()
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/",
