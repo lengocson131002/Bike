@@ -34,4 +34,6 @@ public class Account extends Auditable<String> {
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
     private Boolean isUpdated = false;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    private Vehicle vehicle;
 }

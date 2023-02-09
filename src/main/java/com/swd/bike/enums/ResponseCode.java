@@ -30,7 +30,7 @@ public enum ResponseCode {
     POST_ERROR_CONFLICT_TIME(22, "Conflict time, There are one or more active post(s) at this start time (threshold: " + BaseConstant.POST_THRESHOLD_IN_MINUTES + " minutes)"),
     POST_ERROR_INVALID_STATION(23, "Invalid station. Start station and end station must be different"),
     POST_ERROR_STATION_NOT_FOUND(24, "Station not found"),
-    POST_ERROR_NOT_FOUND(25, "Post not found or closed") ,
+    POST_ERROR_NOT_FOUND(25, "Post not found or closed"),
     POST_ERROR_INVALID_STATUS(26, "Can't update post. Post is current being applied"),
     POST_ERROR_SELF_APPLY(27, "Can't self apply for your post"),
     POST_ERROR_EXISTED_APPLIER(28, "Existed applier"),
@@ -40,6 +40,7 @@ public enum ResponseCode {
     // User
     USER_NOT_FOUND(30, "User not found"),
     USER_MISSING_FIELD(31, "User missing required field"),
+    USER_HAS_REGISTERED_VEHICLE(32, "User has registered vehicle"),
 
     // Trip
     TRIP_ERROR_NOT_FOUND(40, "Trip not found"),
@@ -56,6 +57,9 @@ public enum ResponseCode {
     STATION_NOT_FOUND(51, "Station is not found"),
     STATION_IS_USED(52, "Station is used"),
     STATION_IS_INACTIVE(53, "Station is inactive"),
+
+    //Station
+    VEHICLE_NOT_FOUND(61, "Vehicle is not found"),
     ;
 
     private final int code;

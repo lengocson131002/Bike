@@ -31,7 +31,7 @@ public interface IAuthController {
             summary = "Login with Google",
             description = "- Login với Google"
     )
-    @PostMapping("/loginGoogle")
+    @PostMapping("/google/login")
     ResponseEntity<ResponseBase<AccessTokenResponseCustom>> loginWithGoogle(@Valid @RequestBody GoogleLoginRequest request);
 
     @Operation(
@@ -45,7 +45,7 @@ public interface IAuthController {
             summary = "Refresh Token",
             description = "- Refresh Token"
     )
-    @PostMapping("/refreshToken")
+    @PostMapping("/refresh")
     ResponseEntity<ResponseBase<AccessTokenResponseCustom>> logout(@Valid @RequestBody RefreshTokenRequest request);
 
 }
