@@ -36,7 +36,6 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .csrf().disable()
                 .authorizeRequests()
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/",
                         "/*",
                         "/webjars/**",
@@ -93,4 +92,5 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected AuthenticationEntryPoint authenticationEntryPoint() throws Exception {
         return new RestAuthenticationEntryPoint(adapterDeploymentContext());
     }
+
 }
