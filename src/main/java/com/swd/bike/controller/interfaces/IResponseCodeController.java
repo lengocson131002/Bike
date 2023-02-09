@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "[Public] Response Code Controller", description = "Thao tác với mã lỗi")
-@RequestMapping("/api/v1/responseCodes")
+@RequestMapping("/api/v1/response-codes")
 public interface IResponseCodeController {
     @Operation(summary = "Get All Response Code")
     @GetMapping()
