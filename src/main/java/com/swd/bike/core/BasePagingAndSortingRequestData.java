@@ -20,6 +20,6 @@ public class BasePagingAndSortingRequestData extends BaseRequestData {
     private Sort.Direction sortDirection = PagingAndSortConstant.DEFAULT_SORT_DIRECTION;
 
     public Pageable getPageable() {
-        return PageRequest.of(pageNumber, pageSize, sortDirection, sortBy);
+        return PageRequest.of(pageNumber - 1, pageSize, sortDirection, sortBy);
     }
 }
