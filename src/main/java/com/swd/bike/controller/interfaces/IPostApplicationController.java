@@ -3,6 +3,7 @@ package com.swd.bike.controller.interfaces;
 import com.swd.bike.config.OpenAPIConfig;
 import com.swd.bike.core.ResponseBase;
 import com.swd.bike.dto.application.request.GetAllApplicationsRequest;
+import com.swd.bike.dto.application.response.AppliedPostResponse;
 import com.swd.bike.dto.common.PageResponse;
 import com.swd.bike.dto.userPost.response.PostResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +22,6 @@ import javax.validation.Valid;
 public interface IPostApplicationController {
     @GetMapping
     @Operation(summary = "Get all applied posts")
-    ResponseEntity<ResponseBase<PageResponse<PostResponse>>> getAllApplyingPost(@ParameterObject @Valid GetAllApplicationsRequest request);
+    ResponseEntity<ResponseBase<PageResponse<AppliedPostResponse>>> getAllApplyingPost(@ParameterObject @Valid GetAllApplicationsRequest request);
 
 }
