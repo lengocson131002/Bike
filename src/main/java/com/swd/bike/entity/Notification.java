@@ -36,6 +36,8 @@ public class Notification extends Auditable<String> {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Enumerated(EnumType.STRING)
-    private NotificationStatus status = NotificationStatus.UN_READ;
+    private Boolean isRead = false;
+
+    private LocalDateTime readAt;
+
 }
