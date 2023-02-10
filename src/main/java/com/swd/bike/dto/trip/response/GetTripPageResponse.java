@@ -17,13 +17,18 @@ import java.time.LocalDateTime;
 @SuperBuilder(toBuilder = true)
 public class GetTripPageResponse extends BaseResponseData {
     public Long id;
+    public String passengerId;
     public String passengerName;
+    public String grabberId;
     public String grabberName;
     public String startTime;
     public String endTime;
+    public String cancelTime;
     public Float feedbackPoint;
     public TripStatus status;
+    public Long startStationId;
     public String startStationName;
+    public Long endStationId;
     public String endStationName;
 
 }
