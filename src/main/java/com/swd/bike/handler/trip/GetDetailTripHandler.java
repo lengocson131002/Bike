@@ -22,14 +22,24 @@ public class GetDetailTripHandler extends RequestHandler<GetTripDetailRequest, G
         Trip trip = tripService.getDetailById(request.getId());
         return GetTripDetailResponse.builder()
                 .id(trip.getId())
+                .passengerId(trip.getPassenger().getId())
                 .passengerName(trip.getPassenger().getName())
+                .grabberId(trip.getGrabber().getId())
                 .grabberName(trip.getGrabber().getName())
-                .startTime(OffsetDateTime.of(trip.getStartAt(), ZoneOffset.UTC).toString())
-                .endTime(OffsetDateTime.of(trip.getFinishAt(), ZoneOffset.UTC).toString())
-                .feedbackContent(trip.getFeedbackContent())
+                .startTime(trip.getStartAt() != null
+                        ? OffsetDateTime.of(trip.getStartAt(), ZoneOffset.UTC).toString()
+                        : null)
+                .endTime(trip.getFinishAt() != null
+                        ? OffsetDateTime.of(trip.getFinishAt(), ZoneOffset.UTC).toString()
+                        : null)
+                .cancelTime(trip.getCancelAt() != null
+                        ? OffsetDateTime.of(trip.getCancelAt(), ZoneOffset.UTC).toString()
+                        : null)
                 .feedbackPoint(trip.getFeedbackPoint())
                 .status(trip.getStatus())
+                .startStationId(trip.getStartStation().getId())
                 .startStationName(trip.getStartStation().getName())
+                .endStationId(trip.getEndStation().getId())
                 .endStationName(trip.getEndStation().getName())
                 .build();
     }

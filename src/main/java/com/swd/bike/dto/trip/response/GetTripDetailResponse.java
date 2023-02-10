@@ -17,14 +17,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GetTripDetailResponse extends BaseResponseData {
     public Long id;
+    public String passengerId;
     public String passengerName;
+    public String grabberId;
     public String grabberName;
     public String startTime;
 
     public String endTime;
+    public String cancelTime;
     public Float feedbackPoint;
     public String feedbackContent;
     public TripStatus status;
+    public Long startStationId;
     public String startStationName;
+    public Long endStationId;
     public String endStationName;
 }

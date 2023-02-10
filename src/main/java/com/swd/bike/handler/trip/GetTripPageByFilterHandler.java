@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetTripPageByFilterHandler extends RequestHandler<GetPageByFilterRequest, PageResponse<GetTripPageResponse>> {
     private final ITripService tripService;
+
     @Override
     public PageResponse<GetTripPageResponse> handle(GetPageByFilterRequest request) {
-        Page<Trip> trips = tripService.getTripPageByFilter(request.getSpecification(),request.getPageable());
+        Page<Trip> trips = tripService.getTripPageByFilter(request.getSpecification(), request.getPageable());
 
         PageResponse<GetTripPageResponse> tripPageResponse = new PageResponse<>(trips);
 
@@ -34,13 +35,24 @@ public class GetTripPageByFilterHandler extends RequestHandler<GetPageByFilterRe
     private GetTripPageResponse convertEntityToDTO(Trip trip) {
         return GetTripPageResponse.builder()
                 .id(trip.getId())
+                .passengerId(trip.getPassenger().getId())
                 .passengerName(trip.getPassenger().getName())
+                .grabberId(trip.getGrabber().getId())
                 .grabberName(trip.getGrabber().getName())
-                .startTime(OffsetDateTime.of(trip.getStartAt(), ZoneOffset.UTC).toString())
-                .endTime(OffsetDateTime.of(trip.getFinishAt(), ZoneOffset.UTC).toString())
+                .startTime(trip.getStartAt() != null
+                        ? OffsetDateTime.of(trip.getStartAt(), ZoneOffset.UTC).toString()
+                        : null)
+                .endTime(trip.getFinishAt() != null
+                        ? OffsetDateTime.of(trip.getFinishAt(), ZoneOffset.UTC).toString()
+                        : null)
+                .cancelTime(trip.getCancelAt() != null
+                        ? OffsetDateTime.of(trip.getCancelAt(), ZoneOffset.UTC).toString()
+                        : null)
                 .feedbackPoint(trip.getFeedbackPoint())
                 .status(trip.getStatus())
+                .startStationId(trip.getStartStation().getId())
                 .startStationName(trip.getStartStation().getName())
+                .endStationId(trip.getEndStation().getId())
                 .endStationName(trip.getEndStation().getName())
                 .build();
     }
