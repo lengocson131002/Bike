@@ -18,7 +18,7 @@ import javax.validation.constraints.PositiveOrZero;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PagingFilterRequest extends BaseRequestData {
-    @PositiveOrZero
+    @Positive
     private Integer page;
 
     @Positive
@@ -31,7 +31,7 @@ public class PagingFilterRequest extends BaseRequestData {
 
     public Pageable getPageable() {
         return page != null
-                ? PageRequest.of(page, pageSize, Sort.by(sortDir, sortBy))
+                ? PageRequest.of(page - 1, pageSize, Sort.by(sortDir, sortBy))
                 : Pageable.unpaged();
     }
 }

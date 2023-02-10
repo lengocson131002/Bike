@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface IPostService {
     boolean isExistWithActiveStation(Specification<Post> specification);
@@ -32,4 +33,6 @@ public interface IPostService {
     boolean isPostActive(Post post);
 
     boolean isAuthor(Account author, Post post);
+
+    Page<Post> getAppliedPost(Account account, Pageable pageable);
 }

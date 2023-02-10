@@ -59,4 +59,8 @@ public class Post extends Auditable<String> {
 
     @Enumerated(EnumType.STRING)
     private PostStatus status = PostStatus.CREATED;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "post")
+    private Trip trip;
 }
+

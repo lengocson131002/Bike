@@ -73,4 +73,12 @@ public class PostService implements IPostService {
                 && post.getAuthor() != null
                 && post.getAuthor().getId().equals(author.getId());
     }
+
+    @Override
+    public Page<Post> getAppliedPost(Account account, Pageable pageable) {
+        if (account == null) {
+            return new PageImpl<>(new ArrayList<>());
+        }
+        return postRepository.findByApplicationsContaining(account.getId(), pageable);
+    }
 }
