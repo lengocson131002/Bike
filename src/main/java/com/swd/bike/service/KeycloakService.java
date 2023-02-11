@@ -333,6 +333,7 @@ public class KeycloakService implements IKeycloakService {
         map.add("client_secret", secretKey);
         map.add("subject_token", googleAccessToken);
         map.add("subject_issuer", "google");
+        map.add("scope", "offline_access");
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, httpHeaders);
 
