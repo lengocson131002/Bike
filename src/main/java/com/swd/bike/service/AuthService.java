@@ -58,9 +58,9 @@ public class AuthService implements IAuthService {
         GoogleAccessTokenResponse googleAccessToken = googleService.getAccessToken(code, redirectUri);
         GoogleIdToken googleInfo = GoogleIdToken.get(googleAccessToken.getIdToken());
 
-        if (!googleService.isValidEmail(googleInfo.getHd())) {
-            throw new InternalException(ResponseCode.AUTHENTICATION_FAILED_OUTSIDE_EMAIL);
-        }
+//        if (!googleService.isValidEmail(googleInfo.getHd())) {
+//            throw new InternalException(ResponseCode.AUTHENTICATION_FAILED_OUTSIDE_EMAIL);
+//        }
 
         if (googleAccessToken == null) {
             throw new InternalException(ResponseCode.GOOGLE_AUTH_ERROR);
