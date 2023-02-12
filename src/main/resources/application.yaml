@@ -51,6 +51,9 @@ spring:
     hibernate:
       ddl-auto: update
   kafka:
+    retry:
+      topic:
+        attempts: 1
     bootstrap-servers: ${BOOTSTRAP_SERVERS:52.74.214.224:9092}
     consumer:
       group-id: ${GROUP_ID:bike-notification}
