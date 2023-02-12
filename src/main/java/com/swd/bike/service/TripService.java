@@ -1,5 +1,6 @@
 package com.swd.bike.service;
 
+import com.swd.bike.common.BaseConstant;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.enums.ResponseCode;
@@ -7,7 +8,9 @@ import com.swd.bike.enums.TripStatus;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.repository.AccountRepository;
 import com.swd.bike.repository.TripRepository;
+import com.swd.bike.scheduler.RemindComingTripTask;
 import com.swd.bike.service.interfaces.ITripService;
+import com.swd.bike.util.TimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +27,7 @@ import java.util.List;
 public class TripService implements ITripService {
     private final TripRepository tripRepository;
     private final AccountRepository accountRepository;
+    private final TaskSchedulerService schedulerService;
 
     @Override
     public List<Trip> getTripByFilter(Specification<Trip> specification) {
@@ -94,5 +99,16 @@ public class TripService implements ITripService {
             return 0;
         }
         return tripRepository.countByGrabberIdAndFeedbackPointNotNull(account.getId());
+    }
+
+    @Override
+    public void scheduleRemindComingTrip(Trip trip) {
+        Instant remindTime = TimeUtils
+                .convertLocalDateTimeToInstant(trip.getPostedStartTime())
+                .minusSeconds(BaseConstant.REMIND_TRIP_BEFORE_IN_MINUTES * 60);
+
+        RemindComingTripTask task = new RemindComingTripTask(trip.getId(), remindTime);
+
+        schedulerService.schedule(task);
     }
 }

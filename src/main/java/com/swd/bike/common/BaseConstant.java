@@ -21,4 +21,11 @@ public class BaseConstant {
     public void setTripCancelThresholdInMinutes(Long noMinutes) {
         TRIP_CANCEL_THRESHOLD_IN_MINUTES = noMinutes;
     }
+
+    public static Long REMIND_TRIP_BEFORE_IN_MINUTES;
+
+    @Value("${trip_remind_time:5}")
+    public void setRemindTripBeforeInMinutes(Long minutes) {
+        REMIND_TRIP_BEFORE_IN_MINUTES = minutes;
+    }
 }

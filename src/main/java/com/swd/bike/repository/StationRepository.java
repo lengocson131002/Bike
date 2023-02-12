@@ -24,4 +24,11 @@ public interface StationRepository extends JpaRepository<Station, Long>, JpaSpec
             "WHERE station.id = ?1")
     List<Station> findByFromStationId(Long fromStationId);
 
+    List<Station> findAllByStatus(StationStatus status);
+
+    @Query("SELECT endStation " +
+            "FROM Station station " +
+            "JOIN station.nextStation endStation " +
+            "WHERE station.id = ?1 AND endStation.status = ?2")
+    List<Station> findAllByFromStationIdAndStatus(Long fromStationId, StationStatus status);
 }

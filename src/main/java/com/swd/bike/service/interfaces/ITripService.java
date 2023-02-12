@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 public interface ITripService {
@@ -23,4 +24,6 @@ public interface ITripService {
     Trip getTrip(Long id);
 
     Integer countFeedbackedTrip(Account account);
+
+    void scheduleRemindComingTrip(Trip trip);
 }

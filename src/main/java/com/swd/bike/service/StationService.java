@@ -83,4 +83,17 @@ public class StationService implements IStationService {
         }
         return stationRepository.findByFromStationId(fromStationId);
     }
+
+    @Override
+    public List<Station> getAllActiveStations() {
+        return stationRepository.findAllByStatus(StationStatus.ACTIVE);
+    }
+
+    @Override
+    public List<Station> getAllActiveStations(Long fromStationId) {
+        if (fromStationId == null) {
+            return getAllActiveStations();
+        }
+        return stationRepository.findAllByFromStationIdAndStatus(fromStationId, StationStatus.ACTIVE);
+    }
 }

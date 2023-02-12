@@ -26,8 +26,8 @@ public class GetStationHandler extends RequestHandler<GetStationsRequest, ListRe
     public ListResponse<StationResponse> handle(GetStationsRequest request) {
         Long fromStationId = request.getFromStationId();
         List<Station> stations = Objects.nonNull(fromStationId)
-                ? stationService.getAllStations(fromStationId)
-                : stationService.getAllStations();
+                ? stationService.getAllActiveStations(fromStationId)
+                : stationService.getAllActiveStations();
 
         String query = normalize(request.getQuery());
         if (StringUtils.isNotBlank(query)) {

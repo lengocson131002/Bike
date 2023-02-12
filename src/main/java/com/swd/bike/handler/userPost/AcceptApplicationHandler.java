@@ -72,12 +72,16 @@ public class AcceptApplicationHandler extends RequestHandler<AcceptApplicationRe
                 .setGrabber(grabber)
                 .setPassenger(passenger)
                 .setStatus(TripStatus.CREATED)
+                .setPostedStartTime(post.getStartTime())
                 .setDescription(post.getDescription())
                 .setPost(post)
                 .setStartStation(post.getStartStation())
                 .setEndStation(post.getEndStation());
 
         Trip savedTrip = tripService.save(trip);
+
+        // Todo schedule reminder to remind coming trip
+        tripService.scheduleRemindComingTrip(trip);
 
         post.setStatus(PostStatus.COMPLETED);
         Post savedPost = postService.savePost(post);

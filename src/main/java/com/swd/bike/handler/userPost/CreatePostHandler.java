@@ -65,6 +65,13 @@ public class CreatePostHandler extends RequestHandler<CreatePostRequest, PostRes
             throw new InternalException(ResponseCode.POST_ERROR_STATION_NOT_FOUND);
         }
 
+        boolean isAllowedEndStation = startStation.getNextStation()
+                .stream()
+                .anyMatch(station -> station.getId().equals(endStation.getId()));
+        if (!isAllowedEndStation) {
+            throw new InternalException(ResponseCode.POST_ERROR_INVALID_END_STATION);
+        }
+
         Post post = new Post();
         post
                 .setRole(request.getRole())
@@ -75,6 +82,8 @@ public class CreatePostHandler extends RequestHandler<CreatePostRequest, PostRes
                 .setStartTime(request.getStartTime());
 
         Post saved = postService.savePost(post);
+        postService.scheduleClearExpiredPost(post);
+
         return new PostResponse(saved);
     }
 }
