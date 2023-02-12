@@ -11,12 +11,11 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-public class GetDetailResponse extends BaseResponseData {
+public class GetAccountDetailResponse extends BaseResponseData {
     private String id;
     private String name;
     private String email;

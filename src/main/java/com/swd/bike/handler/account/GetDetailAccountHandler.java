@@ -2,7 +2,7 @@ package com.swd.bike.handler.account;
 
 import com.swd.bike.core.RequestHandler;
 import com.swd.bike.dto.account.request.GetDetailRequest;
-import com.swd.bike.dto.account.response.GetDetailResponse;
+import com.swd.bike.dto.account.response.GetAccountDetailResponse;
 import com.swd.bike.dto.trip.QueryTripModel;
 import com.swd.bike.dto.trip.TripModel;
 import com.swd.bike.dto.vehicle.VehicleModel;
@@ -11,8 +11,6 @@ import com.swd.bike.entity.Trip;
 import com.swd.bike.entity.Vehicle;
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.enums.Role;
-import com.swd.bike.enums.VehicleStatus;
-import com.swd.bike.enums.VehicleType;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.AccountService;
 import com.swd.bike.service.interfaces.ITripService;
@@ -24,14 +22,14 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, GetDetailResponse> {
+public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, GetAccountDetailResponse> {
     private final ITripService tripService;
     private final AccountService accountService;
     @Override
-    public GetDetailResponse handle(GetDetailRequest request) {
+    public GetAccountDetailResponse handle(GetDetailRequest request) {
         // call service method get account role USER
         Account account = accountService.getDetailById(request.getId());
-        if (account.getRole().equals(Role.USER)) {
+        if (!account.getRole().equals(Role.USER)) {
             throw new InternalException(ResponseCode.ACCOUNT_NOT_FOUND);
         }
         // call service method get trip
@@ -43,7 +41,7 @@ public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, Ge
         List<Trip> passengerTrips = tripService.getTripByMemberId(account.getId(), false);
 
         Vehicle vehicle = account.getVehicle();
-        return GetDetailResponse.builder()
+        return GetAccountDetailResponse.builder()
                 .id(account.getId())
                 .name(account.getName())
                 .email(account.getEmail())
