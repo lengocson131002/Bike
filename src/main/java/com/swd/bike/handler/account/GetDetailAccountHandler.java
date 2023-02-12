@@ -5,8 +5,15 @@ import com.swd.bike.dto.account.request.GetDetailRequest;
 import com.swd.bike.dto.account.response.GetDetailResponse;
 import com.swd.bike.dto.trip.QueryTripModel;
 import com.swd.bike.dto.trip.TripModel;
+import com.swd.bike.dto.vehicle.VehicleModel;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Trip;
+import com.swd.bike.entity.Vehicle;
+import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.enums.Role;
+import com.swd.bike.enums.VehicleStatus;
+import com.swd.bike.enums.VehicleType;
+import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.AccountService;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +31,9 @@ public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, Ge
     public GetDetailResponse handle(GetDetailRequest request) {
         // call service method get account role USER
         Account account = accountService.getDetailById(request.getId());
+        if (account.getRole().equals(Role.USER)) {
+            throw new InternalException(ResponseCode.ACCOUNT_NOT_FOUND);
+        }
         // call service method get trip
         QueryTripModel queryTripModel = QueryTripModel.builder()
                 .grabberId(account.getId())
@@ -32,6 +42,7 @@ public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, Ge
         List<Trip> grabberTrips = tripService.getTripByMemberId(account.getId(), true);
         List<Trip> passengerTrips = tripService.getTripByMemberId(account.getId(), false);
 
+        Vehicle vehicle = account.getVehicle();
         return GetDetailResponse.builder()
                 .id(account.getId())
                 .name(account.getName())
@@ -48,6 +59,20 @@ public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, Ge
                 .grabberOfTrips(grabberTrips.stream()
                         .map(trip -> convertTripToTripModel(trip))
                         .collect(Collectors.toList()))
+
+                .vehicle(account.getVehicle() == null
+                        ? null
+                        : VehicleModel.builder()
+                        .id(vehicle.getId())
+                        .brand(vehicle.getBrand())
+                        .licencePlate(vehicle.getLicencePlate()) // vehicle number
+                        .color(vehicle.getColor())
+                        .image(vehicle.getImage())
+                        .description(vehicle.getDescription())
+                        .type(vehicle.getType())
+                        .status(vehicle.getStatus())
+                        .build())
+                .status(account.getStatus())
                 .build();
     }
 

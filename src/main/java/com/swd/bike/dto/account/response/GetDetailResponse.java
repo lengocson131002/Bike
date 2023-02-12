@@ -2,6 +2,8 @@ package com.swd.bike.dto.account.response;
 
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.dto.trip.TripModel;
+import com.swd.bike.dto.vehicle.VehicleModel;
+import com.swd.bike.enums.AccountStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +28,6 @@ public class GetDetailResponse extends BaseResponseData {
     private LocalDateTime modifiedAt;
     private List<TripModel> grabberOfTrips;
     private List<TripModel> passengerOfTrips;
+    private AccountStatus status;
+    private VehicleModel vehicle;
 }

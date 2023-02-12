@@ -2,6 +2,7 @@ package com.swd.bike.dto.account.response;
 
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.dto.trip.TripModel;
+import com.swd.bike.enums.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,5 @@ public class AccountPageResponse extends BaseResponseData {
     private Float averagePoint;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private AccountStatus status;
 }

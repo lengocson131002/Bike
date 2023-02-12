@@ -44,7 +44,7 @@ public class UpdateStationHandler extends RequestHandler<UpdateStationRequest, U
             throw new InternalException(ResponseCode.STATION_IS_USED);
         }
         Station updatedStation = stationService.getStationById(request.getId());
-        if (updatedStation.getStatus().equals(StationStatus.INACTIVE) || !stationService.checkStationsActive(request.getNextStationIds())) {
+        if (updatedStation.getStatus().equals(StationStatus.INACTIVE) || (request.getNextStationIds().size() > 0 && !stationService.checkStationsActive(request.getNextStationIds()))) {
             throw new InternalException(ResponseCode.STATION_IS_INACTIVE);
         }
         updatedStation.setStatus(StationStatus.INACTIVE);

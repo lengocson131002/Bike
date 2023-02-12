@@ -1,11 +1,8 @@
 package com.swd.bike.dto.trip.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swd.bike.core.BasePagingAndSortingRequestData;
-import com.swd.bike.entity.Post;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.enums.TripStatus;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,55 +16,31 @@ import java.util.List;
 @Getter
 @Setter
 public class GetPageByFilterRequest extends BasePagingAndSortingRequestData {
-    private String passengerInfo;
-    private String grabberInfo;
+    private String passengerName;
+    private String grabberName;
     private TripStatus status;
-    private Long startStationId;
-    private Long endStationId;
+    private String startStationName;
+    private String endStationName;
 
-    private Specification<Trip> getByPassengerInfo() {
-        return (root, cQuery, builder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            predicates.add(builder.like(root.join("passenger").get("name"), "%" + passengerInfo + "%"));
-            predicates.add(builder.like(root.join("passenger").get("phone"),"%" + passengerInfo + "%"));
-            predicates.add(builder.like(root.join("passenger").get("email"),"%" + passengerInfo + "%"));
-            return builder.or(predicates.toArray(new Predicate[predicates.size()]));
-        };
-    }
-
-    private Specification<Trip> getByGrabberInfo() {
-        return (root, cQuery, builder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            predicates.add(builder.like(root.join("grabber").get("name"), "%" + passengerInfo + "%"));
-            predicates.add(builder.like(root.join("grabber").get("phone"),"%" + passengerInfo + "%"));
-            predicates.add(builder.like(root.join("grabber").get("email"),"%" + passengerInfo + "%"));
-            return builder.or(predicates.toArray(new Predicate[predicates.size()]));
-        };
-    }
-
-    public Specification<Trip> getByTripInfo() {
+    public Specification<Trip> getSpecification() {
         return (root, cQuery, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (status != null) {
                 predicates.add(builder.equal(root.get("status"), status));
             }
-            if (startStationId != null) {
-                predicates.add(builder.equal(root.get("startStation").get("id"), startStationId));
+            if (passengerName != null) {
+                predicates.add(builder.like(root.join("passenger").get("name"), "%" + passengerName + "%"));
             }
-            if (endStationId != null) {
-                predicates.add(builder.equal(root.get("endStation").get("id"), endStationId));
+            if (grabberName != null) {
+                predicates.add(builder.like(root.join("grabber").get("name"), "%" + grabberName + "%"));
+            }
+            if (startStationName != null) {
+                predicates.add(builder.equal(root.get("startStation").get("name"), startStationName));
+            }
+            if (endStationName != null) {
+                predicates.add(builder.equal(root.get("endStation").get("name"), endStationName));
             }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-    }
-
-    public Specification<Trip> getSpecification() {
-        if (passengerInfo == null && grabberInfo == null  && endStationId == null && startStationId == null && status == null) {
-            return (root, cQuery, builder) -> {
-                List<Predicate> predicates = new ArrayList<>();
-                return builder.and(predicates.toArray(new Predicate[predicates.size()]));
-            };
-        }
-        return Specification.where(getByPassengerInfo()).and(getByGrabberInfo()).and(getByTripInfo());
     }
 }
