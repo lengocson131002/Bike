@@ -9,6 +9,10 @@ public class BaseConstant {
     public static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
 
     public static final String DEFAULT_DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    public static final String KAFKA_CHANNEL_PUBLIC = "NOTIFICATION_CHANNEL_PUBLIC";
+    public static final String KAFKA_CHANNEL_USER = "NOTIFICATION_CHANNEL_USER_%s";
+    public static final String KAFKA_CHANNEL_USER_PREFIX = "NOTIFICATION_CHANNEL_USER_";
+    public static final String KAFKA_CHANNEL_USER_PATTERN = "NOTIFICATION_CHANNEL_USER_\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}";
 
     public static Long POST_THRESHOLD_IN_MINUTES;
     @Value("${post-threshold:30}")

@@ -20,8 +20,6 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
-import javax.ws.rs.HttpMethod;
-
 @KeycloakConfiguration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
@@ -45,7 +43,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/v3/api-docs/**",
                         "/swagger-resources/**",
                         "/api/*/auth/**",
-                        "/api/**/public/**"
+                        "/api/**/public/**",
+                        "/ws/**"
                 ).permitAll()
                 .antMatchers("/api/*/users/**")
                 .hasRole(Role.USER.toString())

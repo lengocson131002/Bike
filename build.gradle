@@ -63,9 +63,17 @@ dependencies {
     // Jackson
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1'
 
+    // Kafka
+    implementation group: 'org.springframework.kafka', name: 'spring-kafka'
+
+    // WebSocket
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: springBootVersion
+
     // Aws
     implementation 'com.amazonaws:aws-java-sdk:1.12.399'
 
+    // Expo
+    implementation 'io.github.jav:expo-server-sdk:1.1.0'
 }
 
 tasks.named('test') {

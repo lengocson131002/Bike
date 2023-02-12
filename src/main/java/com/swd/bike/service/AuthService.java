@@ -20,6 +20,8 @@ import org.keycloak.TokenVerifier;
 import org.keycloak.representations.AccessToken;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -82,6 +84,10 @@ public class AuthService implements IAuthService {
                         .setStatus(AccountStatus.ACTIVE);
                 keycloakService.addUserRole(account.getId(), Role.USER.name());
                 accountService.save(account);
+            } else {
+                if (!Objects.equals(account.getStatus(), AccountStatus.ACTIVE)) {
+                    throw new InternalException(ResponseCode.ACCOUNT_INACTIVE);
+                }
             }
         } catch (Exception e) {
             throw new InternalException(ResponseCode.AUTHENTICATION_FAILED);

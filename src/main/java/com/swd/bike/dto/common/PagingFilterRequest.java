@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter
@@ -19,7 +18,7 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 public class PagingFilterRequest extends BaseRequestData {
     @Positive
-    private Integer page;
+    private Integer page = 1;
 
     @Positive
     @Max(200)

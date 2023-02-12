@@ -46,11 +46,25 @@ spring:
           lob:
             non_contextual_creation: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        show_sql: true
         format_sql: true
+        show_sql: false
     hibernate:
       ddl-auto: update
-
+  kafka:
+    bootstrap-servers: ${BOOTSTRAP_SERVERS:52.74.214.224:9092}
+    consumer:
+      group-id: ${GROUP_ID:bike-app}
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: all
+      retries: 0
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    listener:
+      log-container-config: off
   servlet:
     multipart:
       max-file-size: 100MB
@@ -71,6 +85,11 @@ post-threshold: ${POST_THRESHOLD_IN_MINUTES:30}
 trip_cancel_threshold: ${TRIP_CANCEL_THRESHOLD_IN_MINUTES:30}
 trip_remind_time: ${TRIP_REMIND_TIME_IN_MINUTES:5}
 
+##########################
+# APP VARIABLES
+##########################
+bike:
+  client-url: ${CLIENT_URL:http://localhost:3000/}
 
 ##########################
 # AWS
@@ -80,3 +99,11 @@ aws:
   region: ${AWS_BUCKET_REGION:}
   access-key: ${AWS_ACCESS_KEY:}
   secret-key: ${AWS_SECRET_KEY:}
+
+##########################
+# LOG
+##########################
+logging:
+  level:
+    kafka: off
+    sql: off
