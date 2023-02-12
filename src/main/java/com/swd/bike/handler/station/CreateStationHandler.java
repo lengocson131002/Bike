@@ -26,7 +26,7 @@ public class CreateStationHandler extends RequestHandler<CreateStationRequest, C
         List<Station> nextStations = request.getNextStationIds().stream()
                 .map(stationId -> stationService.getRefById(stationId))
                 .collect(Collectors.toList());
-        if (!stationService.checkStationsActive(request.getNextStationIds())) {
+        if (request.getNextStationIds().size() > 0 && !stationService.checkStationsActive(request.getNextStationIds())) {
             throw new InternalException(ResponseCode.STATION_IS_INACTIVE);
         }
 

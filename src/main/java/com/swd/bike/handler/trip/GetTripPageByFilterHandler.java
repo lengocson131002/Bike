@@ -54,6 +54,8 @@ public class GetTripPageByFilterHandler extends RequestHandler<GetPageByFilterRe
                 .startStationName(trip.getStartStation().getName())
                 .endStationId(trip.getEndStation().getId())
                 .endStationName(trip.getEndStation().getName())
+                .startStationId(trip.getStartStation().getId())
+                .endStationId(trip.getEndStation().getId())
                 .build();
     }
 }

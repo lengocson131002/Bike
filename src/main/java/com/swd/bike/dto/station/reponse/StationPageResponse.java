@@ -20,4 +20,6 @@ public class StationPageResponse extends BaseResponseData {
     private String address;
     private String description;
     private StationStatus status;
+    private float longitude;
+    private float latitude;
 }

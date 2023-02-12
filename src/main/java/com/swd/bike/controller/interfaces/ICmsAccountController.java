@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = "[Cms] Account Controller", description = "Thao tác với tài khoản")
 @SecurityRequirement(name = OpenAPIConfig.BEARER_SCHEME)
 public interface ICmsAccountController {
+    @GetMapping("/{id}")
     ResponseEntity<ResponseBase<GetDetailResponse>> getDetailById(
-            @PathVariable String id);
+            @PathVariable("id") String id);
 
+    @GetMapping("")
     ResponseEntity<ResponseBase<PageResponse<AccountPageResponse>>> getPageByFilter(
             @ParameterObject GetPageByFilterRequest request);
 }

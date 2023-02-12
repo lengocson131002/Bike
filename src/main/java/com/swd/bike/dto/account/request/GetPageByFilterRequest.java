@@ -3,6 +3,7 @@ package com.swd.bike.dto.account.request;
 import com.swd.bike.core.BasePagingAndSortingRequestData;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Station;
+import com.swd.bike.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class GetPageByFilterRequest extends BasePagingAndSortingRequestData {
     public Specification<Account> getSpecification() {
         return (root, cQuery, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(builder.equal(root.get("role"), Role.USER));
 
             if (StringUtils.isNotBlank(phone)) {
                 predicates.add(builder.like(root.get("phone"), "%" + phone + "%"));

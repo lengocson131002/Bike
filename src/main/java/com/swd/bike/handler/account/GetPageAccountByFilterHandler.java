@@ -39,6 +39,7 @@ public class GetPageAccountByFilterHandler extends RequestHandler<GetPageByFilte
                 .avatar(account.getAvatar())
                 .modifiedAt(account.getModifiedAt())
                 .createdAt(account.getCreatedAt())
+                .status(account.getStatus())
                 .build();
     }
 }
