@@ -38,6 +38,7 @@ public class AccountService implements IAccountService {
     public Account getById(String id) {
         return accountRepository.findById(id).orElse(null);
     }
+
     @Override
     public Account getDetailById(String id) {
         return accountRepository.findById(id).orElseThrow(() -> new InternalException(ResponseCode.ACCOUNT_NOT_FOUND));

@@ -1,12 +1,12 @@
 package com.swd.bike.entity;
 
-import com.swd.bike.enums.NotificationStatus;
-import com.swd.bike.enums.NotificationType;
+import com.swd.bike.enums.notification.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,9 +16,10 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldNameConstants
 @Accessors(chain = true)
 @Table(name = Notification.COLLECTION_NAME)
-public class Notification extends Auditable<String> {
+public class Notification {
     public static final String COLLECTION_NAME = "notification";
 
     @Id
@@ -28,7 +29,8 @@ public class Notification extends Auditable<String> {
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
-    private String content;
+    private String title;
+    private String body;
 
     private LocalDateTime time;
 
@@ -39,5 +41,4 @@ public class Notification extends Auditable<String> {
     private Boolean isRead = false;
 
     private LocalDateTime readAt;
-
 }

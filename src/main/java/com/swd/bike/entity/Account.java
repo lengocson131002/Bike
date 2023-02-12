@@ -7,14 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldNameConstants
 @Accessors(chain = true)
 @Table(name = Account.COLLECTION_NAME)
 public class Account extends Auditable<String> {
@@ -36,4 +40,6 @@ public class Account extends Auditable<String> {
     private Boolean isUpdated = false;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     private Vehicle vehicle;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExponentPushToken> tokens = new ArrayList<>();
 }

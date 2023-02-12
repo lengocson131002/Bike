@@ -51,8 +51,6 @@ public enum ResponseCode {
     TRIP_ERROR_EXISTED_FEEDBACK(44, "Existed feedback"),
     TRIP_ERROR_CAN_NOT_CANCEL_TRIP(45, "You must cancel the trip at least " + BaseConstant.TRIP_CANCEL_THRESHOLD_IN_MINUTES + " minutes before the start time"),
 
-    //Account
-    ACCOUNT_NOT_FOUND(64, "Account is not found"),
 
     //Station
     STATION_NOT_FOUND(51, "Station is not found"),
@@ -61,6 +59,14 @@ public enum ResponseCode {
 
     //Station
     VEHICLE_NOT_FOUND(61, "Vehicle is not found"),
+
+    //Account
+    ACCOUNT_NOT_FOUND(71, "Account is not found"),
+    ACCOUNT_INACTIVE(72, "Account is inactive"),
+
+    //Account
+    NOTIFICATION_NOT_FOUND(81, "Notification is not found"),
+
     ;
 
     private final int code;
