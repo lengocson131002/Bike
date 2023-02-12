@@ -4,7 +4,9 @@ import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Post;
 import com.swd.bike.enums.PostStatus;
 import com.swd.bike.repository.PostRepository;
+import com.swd.bike.scheduler.ClearExpiredPostTask;
 import com.swd.bike.service.interfaces.IPostService;
+import com.swd.bike.util.TimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,15 +14,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PostService implements IPostService {
 
     private final PostRepository postRepository;
+    private final TaskSchedulerService schedulerService;
 
     @Override
     public boolean isExistWithActiveStation(Specification<Post> specification) {
@@ -63,7 +66,9 @@ public class PostService implements IPostService {
 
     @Override
     public boolean isPostActive(Post post) {
-        return post != null && PostStatus.CREATED.equals(post.getStatus());
+        return post != null
+                && PostStatus.CREATED.equals(post.getStatus())
+                && post.getStartTime().isAfter(LocalDateTime.now());
     }
 
     @Override
@@ -80,5 +85,12 @@ public class PostService implements IPostService {
             return new PageImpl<>(new ArrayList<>());
         }
         return postRepository.findByApplicationsContaining(account.getId(), pageable);
+    }
+
+    @Override
+    public void scheduleClearExpiredPost(Post post) {
+        Instant clearTime = TimeUtils.convertLocalDateTimeToInstant(post.getStartTime());
+        ClearExpiredPostTask task = new ClearExpiredPostTask(post.getId(), clearTime);
+        schedulerService.schedule(task);
     }
 }

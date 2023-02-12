@@ -35,4 +35,6 @@ public interface IPostService {
     boolean isAuthor(Account author, Post post);
 
     Page<Post> getAppliedPost(Account account, Pageable pageable);
+
+    void scheduleClearExpiredPost(Post post);
 }

@@ -62,4 +62,6 @@ public class Trip extends Auditable<String> {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    private LocalDateTime postedStartTime;
+
 }

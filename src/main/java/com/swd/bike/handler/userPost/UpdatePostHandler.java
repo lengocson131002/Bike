@@ -100,6 +100,13 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
             throw new InternalException(ResponseCode.POST_ERROR_INVALID_STATION);
         }
 
+        boolean isAllowedEndStation = post.getStartStation().getNextStation()
+                .stream()
+                .anyMatch(station -> station.getId().equals(post.getEndStation().getId()));
+        if (!isAllowedEndStation) {
+            throw new InternalException(ResponseCode.POST_ERROR_INVALID_END_STATION);
+        }
+
         Account author = contextService.getLoggedInUser();
         Post existPost = postService.findAnyPostStartAt(author, post.getStartTime(), BaseConstant.POST_THRESHOLD_IN_MINUTES);
         if (existPost != null && !existPost.getId().equals(post.getId())) {
@@ -107,6 +114,8 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
         }
 
         Post savedPost = postService.savePost(post);
+        postService.scheduleClearExpiredPost(savedPost);
+
         return new PostResponse(savedPost);
     }
 }

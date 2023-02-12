@@ -20,4 +20,6 @@ public interface IStationService {
     Station findStation(Long id);
     List<Station> getAllStations();
     List<Station> getAllStations(Long fromStationId);
+    List<Station> getAllActiveStations();
+    List<Station> getAllActiveStations(Long fromStationId);
 }

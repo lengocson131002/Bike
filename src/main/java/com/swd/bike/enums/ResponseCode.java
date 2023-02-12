@@ -35,6 +35,7 @@ public enum ResponseCode {
     POST_ERROR_SELF_APPLY(27, "Can't self apply for your post"),
     POST_ERROR_EXISTED_APPLIER(28, "Existed applier"),
     POST_ERROR_NOT_EXISTED_APPLIER(29, "Not existed applier"),
+    POST_ERROR_INVALID_END_STATION(30, "End station can't be accessed from start station"),
 
 
     // User

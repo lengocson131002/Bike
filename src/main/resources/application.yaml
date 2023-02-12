@@ -69,13 +69,14 @@ google:
 
 post-threshold: ${POST_THRESHOLD_IN_MINUTES:30}
 trip_cancel_threshold: ${TRIP_CANCEL_THRESHOLD_IN_MINUTES:30}
+trip_remind_time: ${TRIP_REMIND_TIME_IN_MINUTES:5}
 
 
 ##########################
 # AWS
 ##########################
 aws:
-  bucket: ${AWS_BUCKET_NAME:swd-bike}
-  region: ${AWS_BUCKET_REGION:ap-southeast-1}
-  access-key: ${AWS_ACCESS_KEY:AKIAUDA34SKADERFJ3ST}
-  secret-key: ${AWS_SECRET_KEY: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}
+  bucket: ${AWS_BUCKET_NAME:}
+  region: ${AWS_BUCKET_REGION:}
+  access-key: ${AWS_ACCESS_KEY:}
+  secret-key: ${AWS_SECRET_KEY:}
