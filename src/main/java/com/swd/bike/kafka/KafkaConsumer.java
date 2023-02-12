@@ -25,7 +25,7 @@ public class KafkaConsumer {
     private final ExpoService expoService;
     private final INotificationService notificationService;
 
-    @KafkaListener(topics = BaseConstant.KAFKA_CHANNEL_PUBLIC, groupId = "bike-app")
+    @KafkaListener(topics = BaseConstant.KAFKA_CHANNEL_PUBLIC, groupId = BaseConstant.KAFKA_GROUP_ID)
     public void consume(String message) {
         NotificationDto notification = JsonUtil.INSTANCE.getObject(message, NotificationDto.class);
         if (notification == null) {
@@ -38,7 +38,7 @@ public class KafkaConsumer {
         this.pushPublic(notification);
     }
 
-    @KafkaListener(topicPattern = BaseConstant.KAFKA_CHANNEL_USER_PATTERN, groupId = "bike-app")
+    @KafkaListener(topicPattern = BaseConstant.KAFKA_CHANNEL_USER_PATTERN, groupId = BaseConstant.KAFKA_GROUP_ID)
     public void consume(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         NotificationDto notification = JsonUtil.INSTANCE.getObject(message, NotificationDto.class);
         if (notification == null) {

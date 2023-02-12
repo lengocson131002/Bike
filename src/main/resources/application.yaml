@@ -53,7 +53,7 @@ spring:
   kafka:
     bootstrap-servers: ${BOOTSTRAP_SERVERS:52.74.214.224:9092}
     consumer:
-      group-id: ${GROUP_ID:bike-app}
+      group-id: ${GROUP_ID:bike-notification}
       auto-offset-reset: earliest
       enable-auto-commit: false
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
