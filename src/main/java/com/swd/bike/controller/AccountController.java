@@ -3,6 +3,8 @@ package com.swd.bike.controller;
 import com.swd.bike.controller.interfaces.ICmsAccountController;
 import com.swd.bike.core.BaseController;
 import com.swd.bike.core.ResponseBase;
+import com.swd.bike.dto.account.request.UpdateAccountStatusRequest;
+import com.swd.bike.dto.account.response.UpdateAccountStatusResponse;
 import com.swd.bike.dto.common.PageResponse;
 import com.swd.bike.dto.account.response.GetAccountDetailResponse;
 import com.swd.bike.dto.account.response.AccountPageResponse;
@@ -22,6 +24,13 @@ public class AccountController extends BaseController implements ICmsAccountCont
         request.setId(id);
         return this.execute(request);
     }
+
+    @Override
+    public ResponseEntity<ResponseBase<UpdateAccountStatusResponse>> updateAccountStatus(String id, UpdateAccountStatusRequest request) {
+        request.setId(id);
+        return this.execute(request);
+    }
+
 
     @Override
     public ResponseEntity<ResponseBase<PageResponse<AccountPageResponse>>> getPageByFilter(
