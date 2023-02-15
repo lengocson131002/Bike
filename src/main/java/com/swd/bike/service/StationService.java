@@ -43,7 +43,10 @@ public class StationService implements IStationService {
     @Override
     public boolean checkStationsActive(List<Long> ids) {
         List<Station> stations = stationRepository.findAllById(ids);
-        return stations != null && stations.stream().anyMatch(station -> station.getStatus().equals(StationStatus.ACTIVE));
+        if (stations == null || stations.isEmpty()) {
+            throw new InternalException(ResponseCode.STATION_NOT_FOUND);
+        }
+        return stations != null && !stations.isEmpty() && stations.stream().allMatch(station -> station.getStatus().equals(StationStatus.ACTIVE));
     }
 
     @Override

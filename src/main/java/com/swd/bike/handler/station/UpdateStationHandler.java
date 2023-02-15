@@ -15,12 +15,14 @@ import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.service.interfaces.IStationService;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class UpdateStationHandler extends RequestHandler<UpdateStationRequest, UpdateStationResponse> {
     private final IStationService stationService;
     private final ITripService tripService;
@@ -44,29 +46,28 @@ public class UpdateStationHandler extends RequestHandler<UpdateStationRequest, U
             throw new InternalException(ResponseCode.STATION_IS_USED);
         }
         Station updatedStation = stationService.getStationById(request.getId());
-        if (updatedStation.getStatus().equals(StationStatus.INACTIVE) || (request.getNextStationIds().size() > 0 && !stationService.checkStationsActive(request.getNextStationIds()))) {
+        log.info(" " + stationService.checkStationsActive(request.getNextStationIds()));
+        if (updatedStation.getStatus().equals(StationStatus.INACTIVE) || ((request.getNextStationIds().size() > 0 && stationService.checkStationsActive(request.getNextStationIds()) == false))) {
+
             throw new InternalException(ResponseCode.STATION_IS_INACTIVE);
         }
-        updatedStation.setStatus(StationStatus.INACTIVE);
+
+        updatedStation.setAddress(request.getAddress());
+        updatedStation.setName(request.getName());
+        updatedStation.setLongitude(request.getLongitude());
+        updatedStation.setLatitude(request.getLatitude());
+        updatedStation.setDescription(request.getDescription());
+        updatedStation.setNextStation(stationService.findAllByIds(request.getNextStationIds()));
+
         stationService.createOrUpdate(updatedStation);
 
-        CreateStationRequest createStationRequest = new CreateStationRequest();
-
-        createStationRequest.setAddress(request.getAddress());
-        createStationRequest.setName(request.getName());
-        createStationRequest.setLongitude(request.getLongitude());
-        createStationRequest.setLatitude(request.getLatitude());
-        createStationRequest.setDescription(request.getDescription());
-        createStationRequest.setNextStationIds(request.getNextStationIds());
-        CreateStationResponse station = createStationHandler.handle(createStationRequest);
-
         UpdateStationResponse response = UpdateStationResponse.builder()
-                .id(station.getId())
-                .name(station.getName())
-                .address(station.getAddress())
-                .longitude(station.getLongitude())
-                .latitude(station.getLatitude())
-                .description(station.getDescription())
+                .id(updatedStation.getId())
+                .name(updatedStation.getName())
+                .address(updatedStation.getAddress())
+                .longitude(updatedStation.getLongitude())
+                .latitude(updatedStation.getLatitude())
+                .description(updatedStation.getDescription())
                 .nextStationIds(request.getNextStationIds())
                 .build();
         return response;
