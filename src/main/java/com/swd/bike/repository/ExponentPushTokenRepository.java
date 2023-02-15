@@ -12,13 +12,11 @@ public interface ExponentPushTokenRepository extends JpaRepository<ExponentPushT
 
     @Query("SELECT DISTINCT e.token" +
             " FROM ExponentPushToken e" +
-            " JOIN Account a" +
-            " ON a.id = ?1")
+            " JOIN e.account a" +
+            " WHERE a.id = ?1")
     List<String> findAllTokensByAccountId(String accountId);
 
     @Query("SELECT DISTINCT e.token" +
-            " FROM ExponentPushToken e" +
-            " JOIN Account a" +
-            " ON e.account = a")
+            " FROM ExponentPushToken e")
     List<String> findAllTokens();
 }
