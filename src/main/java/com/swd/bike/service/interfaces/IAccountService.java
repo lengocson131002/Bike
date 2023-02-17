@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface IAccountService {
     Account findAccount(String id);
@@ -15,6 +15,11 @@ public interface IAccountService {
     Account getById(String id);
 
     Account getDetailById(String id);
+
+    String getIdBySubjectId(String subjectId);
+    Account getBySubjectId(String subjectId);
+
+    Optional<String> getIdBySubjectIdOpt(String subjectId);
 
     Page<Account> getAccountsByFilter(Specification<Account> specification, Pageable pageable);
 }

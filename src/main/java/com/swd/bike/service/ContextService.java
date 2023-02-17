@@ -67,8 +67,13 @@ public class ContextService {
      */
     public Optional<String> getLoginUserId() {
         AccessToken loggedInToken = getLoggedInAccessToken();
-        return loggedInToken != null
+
+        Optional<String> subjectId = loggedInToken != null
                 ? Optional.of(loggedInToken.getSubject())
+                : Optional.empty();
+
+        return !subjectId.isEmpty()
+                ? accountService.getIdBySubjectIdOpt(subjectId.get())
                 : Optional.empty();
     }
 
@@ -91,8 +96,8 @@ public class ContextService {
                 log.info("Unauthorized request");
                 return null;
             }
-            String accountId = loggedInToken.getSubject();
-            return accountService.findAccount(accountId);
+            String subjectId = loggedInToken.getSubject();
+            return accountService.getBySubjectId(subjectId);
         } catch (Exception ex) {
             log.error("Get current login user failed, {}", ex.getMessage());
             throw new InternalException(ResponseCode.UNAUTHORIZED_REQUEST);

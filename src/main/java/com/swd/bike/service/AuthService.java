@@ -42,7 +42,7 @@ public class AuthService implements IAuthService {
         try {
             token = TokenVerifier.create(accessTokenResponseCustom.getToken(), AccessToken.class).getToken();
         } catch (Exception e) {
-            log.error("error when login with username and password: {}", e.getMessage());
+            log.error("error when login with username and password: {}", e.getLocalizedMessage());
             throw new InternalException(ResponseCode.INVALID_USERNAME_OR_PASSWORD);
         }
 
@@ -76,13 +76,13 @@ public class AuthService implements IAuthService {
             if (account == null) {
                 account = new Account()
                         .setRole(Role.USER)
-                        .setId(token.getSubject())
+                        .setSubjectId(token.getSubject())
                         .setName(googleInfo.getGivenName())
                         .setAvatar(googleInfo.getPicture())
                         .setEmail(googleInfo.getEmail())
                         .setIsUpdated(false)
                         .setStatus(AccountStatus.ACTIVE);
-                keycloakService.addUserRole(account.getId(), Role.USER.name());
+                keycloakService.addUserRole(account.getSubjectId(), Role.USER.name());
                 accountService.save(account);
             } else {
                 if (!Objects.equals(account.getStatus(), AccountStatus.ACTIVE)) {

@@ -9,11 +9,13 @@ public class NotificationConstant {
         public static final String VEHICLE_REGISTRATION_CREATE = "Vehicle registration";
         public static final String VEHICLE_REGISTRATION_APPROVE = "Your vehicle registration has been approved";
         public static final String VEHICLE_REGISTRATION_DENIED = "Your vehicle registration has been denied";
+        public static final String VEHICLE_UPDATE = "Vehicle Update";
     }
 
     public class Body {
         public static final String VEHICLE_REGISTRATION_CREATE = "User %s {ID: %s} has registered their vehicle";
         public static final String VEHICLE_REGISTRATION_APPROVE = "Your vehicle %s {ID: %s} has been approved";
         public static final String VEHICLE_REGISTRATION_DENIED = "Your vehicle %s {ID: %s} has been denied";
+        public static final String VEHICLE_UPDATE = "User %s {ID: %s} has updated their vehicle";
     }
 }

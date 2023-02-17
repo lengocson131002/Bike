@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor
@@ -42,6 +44,21 @@ public class AccountService implements IAccountService {
     @Override
     public Account getDetailById(String id) {
         return accountRepository.findById(id).orElseThrow(() -> new InternalException(ResponseCode.ACCOUNT_NOT_FOUND));
+    }
+
+    @Override
+    public String getIdBySubjectId(String subjectId) {
+        return accountRepository.findIdBySubjectId(subjectId).orElse(null);
+    }
+
+    @Override
+    public Account getBySubjectId(String subjectId) {
+        return accountRepository.findBySubjectId(subjectId);
+    }
+
+    @Override
+    public Optional<String> getIdBySubjectIdOpt(String subjectId) {
+        return accountRepository.findIdBySubjectId(subjectId);
     }
 
     @Override
