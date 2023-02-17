@@ -24,7 +24,7 @@ public class PushNotificationService implements IPushNotificationService {
     private final AccountRepository accountRepository;
 
     @Async
-    private boolean send(String topic, NotificationDto notification) {
+    boolean send(String topic, NotificationDto notification) {
         if (notification == null || topic == null) {
             log.error("Send notification failed.");
             return false;

@@ -1,5 +1,7 @@
 package com.swd.bike.dto.userPost.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swd.bike.common.BaseConstant;
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Post;
@@ -10,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +24,9 @@ public class PostResponse extends BaseResponseData {
     private Long id;
     private TripRole role;
     private String description;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private String authorId;

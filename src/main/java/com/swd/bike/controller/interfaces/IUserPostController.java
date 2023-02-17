@@ -2,6 +2,8 @@ package com.swd.bike.controller.interfaces;
 
 import com.swd.bike.config.OpenAPIConfig;
 import com.swd.bike.core.ResponseBase;
+import com.swd.bike.dto.account.response.AccountResponse;
+import com.swd.bike.dto.common.ListResponse;
 import com.swd.bike.dto.common.PageResponse;
 import com.swd.bike.dto.common.StatusResponse;
 import com.swd.bike.dto.userPost.request.CreatePostRequest;
@@ -42,6 +44,10 @@ public interface IUserPostController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete post")
     ResponseEntity<ResponseBase<PostResponse>> deletePost(@PathVariable Long id);
+
+    @GetMapping("{id}/appliers")
+    @Operation(summary = "Get all appliers")
+    ResponseEntity<ResponseBase<ListResponse<AccountResponse>>> getAllAppliers(@PathVariable Long id);
 
     @PostMapping("/{id}/appliers")
     @Operation(summary = "Apply for a post")

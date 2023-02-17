@@ -3,6 +3,8 @@ package com.swd.bike.controller;
 import com.swd.bike.controller.interfaces.IUserPostController;
 import com.swd.bike.core.BaseController;
 import com.swd.bike.core.ResponseBase;
+import com.swd.bike.dto.account.response.AccountResponse;
+import com.swd.bike.dto.common.ListResponse;
 import com.swd.bike.dto.common.PageResponse;
 import com.swd.bike.dto.common.StatusResponse;
 import com.swd.bike.dto.userPost.request.*;
@@ -42,6 +44,12 @@ public class UserPostController extends BaseController implements IUserPostContr
     public ResponseEntity<ResponseBase<PostResponse>> deletePost(Long id) {
         DeletePostRequest request = new DeletePostRequest();
         request.setId(id);
+        return this.execute(request);
+    }
+
+    @Override
+    public ResponseEntity<ResponseBase<ListResponse<AccountResponse>>> getAllAppliers(Long id) {
+        GetAllAppliersRequest request = new GetAllAppliersRequest(id);
         return this.execute(request);
     }
 

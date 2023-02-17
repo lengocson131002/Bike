@@ -54,7 +54,7 @@ spring:
     retry:
       topic:
         attempts: 1
-    bootstrap-servers: ${BOOTSTRAP_SERVERS:52.74.214.224:9092}
+    bootstrap-servers: ${BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: ${GROUP_ID:bike-notification}
       auto-offset-reset: earliest
