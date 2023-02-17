@@ -35,4 +35,6 @@ public class BaseConstant {
     public void setRemindTripBeforeInMinutes(Long minutes) {
         REMIND_TRIP_BEFORE_IN_MINUTES = minutes;
     }
+
+    public static final String UTC_TIMEZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 }
