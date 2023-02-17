@@ -33,6 +33,14 @@ public class VehicleService implements IVehicleService {
     }
 
     @Override
+    public void delete(Vehicle vehicle) {
+        if (vehicle == null) {
+            return;
+        }
+        vehicleRepository.delete(vehicle);
+    }
+
+    @Override
     public Page<Vehicle> getAll(Specification<Vehicle> specification, Pageable pageable) {
         return vehicleRepository.findAll(specification, pageable);
     }

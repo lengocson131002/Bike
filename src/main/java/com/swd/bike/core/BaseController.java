@@ -2,6 +2,7 @@ package com.swd.bike.core;
 
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.exception.InternalException;
+import com.swd.bike.service.interfaces.IAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,14 @@ import org.springframework.stereotype.Component;
 public class BaseController {
     @Autowired
     protected SpringBus springBus;
+    @Autowired
+    private IAccountService accountService;
 
     protected <T extends RequestData, I extends ResponseData> ResponseEntity<ResponseBase<I>> execute(T request) {
         return ResponseEntity.ok(new ResponseBase<>(this.springBus.execute(request)));
     }
 
-    protected String getUserId() {
+    protected String getSubjectId() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         if (securityContext == null ||
                 securityContext.getAuthentication() == null ||
@@ -30,4 +33,9 @@ public class BaseController {
         }
         return securityContext.getAuthentication().getName();
     }
+
+    protected String getUserId() {
+        return accountService.getIdBySubjectId(getSubjectId());
+    }
+
 }

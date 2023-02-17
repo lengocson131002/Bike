@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,6 +27,11 @@ public class Account extends Auditable<String> {
     public static final String COLLECTION_NAME = "account";
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private String id;
     private String email;
     private String name;
@@ -42,4 +48,5 @@ public class Account extends Auditable<String> {
     private Vehicle vehicle;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExponentPushToken> tokens = new ArrayList<>();
+    private String subjectId;
 }

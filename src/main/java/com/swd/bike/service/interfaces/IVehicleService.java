@@ -11,6 +11,7 @@ public interface IVehicleService {
     Vehicle getById(Long id);
 
     Vehicle getByOwnerId(String id);
+    void delete(Vehicle vehicle);
 
     Page<Vehicle> getAll(Specification<Vehicle> specification, Pageable pageable);
 }

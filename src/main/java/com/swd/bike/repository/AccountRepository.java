@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String>, JpaSpecificationExecutor<Account> {
@@ -18,4 +19,10 @@ public interface AccountRepository extends JpaRepository<Account, String>, JpaSp
 
     @Query("SELECT a.id FROM Account a WHERE a.role = ?1")
     List<String> findAllIdsByRoleIs(Role role);
+
+    @Query("SELECT a.id FROM Account a WHERE a.subjectId = ?1")
+    Optional<String> findIdBySubjectId(String id);
+
+    Account findBySubjectId(String subjectId);
+
 }
