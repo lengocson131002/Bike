@@ -34,7 +34,7 @@ public class Vehicle extends Auditable<String> {
     private String description;
     @Enumerated(EnumType.STRING)
     private VehicleType type;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account owner;
     @Enumerated(EnumType.STRING)
