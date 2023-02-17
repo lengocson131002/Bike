@@ -44,7 +44,7 @@ public class Account extends Auditable<String> {
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
     private Boolean isUpdated = false;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "owner")
     private Vehicle vehicle;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExponentPushToken> tokens = new ArrayList<>();
