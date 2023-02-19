@@ -26,6 +26,7 @@ public class GetDetailStationHandler extends RequestHandler<GetDetailRequest, Ge
                 .longitude(station.getLongitude())
                 .latitude(station.getLatitude())
                 .description(station.getDescription())
+                .status(station.getStatus())
                 .nextStations(station.getNextStation() == null
                         ? new ArrayList<>()
                         : station.getNextStation()

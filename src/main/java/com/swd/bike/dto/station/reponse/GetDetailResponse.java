@@ -2,10 +2,9 @@ package com.swd.bike.dto.station.reponse;
 
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.dto.station.StationModel;
-import com.swd.bike.dto.trip.TripModel;
+import com.swd.bike.enums.StationStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -21,5 +20,6 @@ public class GetDetailResponse extends BaseResponseData {
     private String description;
     private Float longitude;
     private Float latitude;
+    private StationStatus status;
     private List<StationModel> nextStations;
 }
