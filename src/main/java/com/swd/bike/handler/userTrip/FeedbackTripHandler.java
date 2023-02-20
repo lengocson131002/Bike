@@ -1,15 +1,19 @@
 package com.swd.bike.handler.userTrip;
 
+import com.swd.bike.common.NotificationConstant;
 import com.swd.bike.core.RequestHandler;
 import com.swd.bike.dto.common.StatusResponse;
+import com.swd.bike.dto.notification.dtos.NotificationDto;
 import com.swd.bike.dto.userTrip.request.FeedbackTripRequest;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.enums.TripStatus;
+import com.swd.bike.enums.notification.NotificationAction;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.ContextService;
 import com.swd.bike.service.interfaces.IAccountService;
+import com.swd.bike.service.interfaces.IPushNotificationService;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,6 +28,7 @@ public class FeedbackTripHandler extends RequestHandler<FeedbackTripRequest, Sta
     private final ITripService tripService;
     private final ContextService contextService;
     private final IAccountService accountService;
+    private final IPushNotificationService pushNotificationService;
 
     @Override
     @Transactional
@@ -33,11 +38,9 @@ public class FeedbackTripHandler extends RequestHandler<FeedbackTripRequest, Sta
             throw new InternalException(ResponseCode.TRIP_ERROR_NOT_FOUND);
         }
 
-        String currentUserId = contextService
-                .getLoginUserId()
-                .orElseThrow(() -> new InternalException(ResponseCode.UNAUTHORIZED_REQUEST));
+        Account currentUser = contextService.getLoggedInUser();
 
-        if (!Objects.equals(trip.getPassenger().getId(), currentUserId)) {
+        if (!Objects.equals(trip.getPassenger().getId(), currentUser.getId())) {
             throw new InternalException(ResponseCode.TRIP_ERROR_INVALID_ACCESS);
         }
 
@@ -68,6 +71,13 @@ public class FeedbackTripHandler extends RequestHandler<FeedbackTripRequest, Sta
         trip.setFeedbackPoint(point);
         trip.setFeedbackContent(content);
         Trip savedTrip = tripService.save(trip);
+
+        pushNotificationService.sendTo(trip.getGrabber().getId(), new NotificationDto()
+                .setTitle(NotificationConstant.Title.TRIP_FEEDBACK)
+                .setBody(String.format(NotificationConstant.Body.TRIP_FEEDBACK, currentUser.getName(), trip.getStartStation().getName(), trip.getEndStation().getName()))
+                .setAction(NotificationAction.OPEN_TRIP)
+                .setReferenceId(savedTrip.getId().toString())
+        );
 
         return new StatusResponse(savedTrip != null);
     }

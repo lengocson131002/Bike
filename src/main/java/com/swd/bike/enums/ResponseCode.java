@@ -37,6 +37,8 @@ public enum ResponseCode {
     POST_ERROR_NOT_EXISTED_APPLIER(29, "Not existed applier"),
     POST_ERROR_INVALID_END_STATION(30, "End station can't be accessed from start station"),
 
+    POST_ERROR_UNREGISTERED_VEHICLE(31, "Account has not registered the vehicle yet"),
+    POST_ERROR_UNUPDATED_ACCOUNT(32, "Account has not updated information yet"),
 
     // User
     USER_NOT_FOUND(30, "User not found"),

@@ -4,11 +4,10 @@ import com.swd.bike.common.BaseConstant;
 import com.swd.bike.core.RequestHandler;
 import com.swd.bike.dto.userPost.request.CreatePostRequest;
 import com.swd.bike.dto.userPost.response.PostResponse;
-import com.swd.bike.entity.Account;
-import com.swd.bike.entity.Post;
-import com.swd.bike.entity.Station;
-import com.swd.bike.entity.Trip;
+import com.swd.bike.entity.*;
 import com.swd.bike.enums.ResponseCode;
+import com.swd.bike.enums.TripRole;
+import com.swd.bike.enums.VehicleStatus;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.ContextService;
 import com.swd.bike.service.interfaces.IPostService;
@@ -33,12 +32,21 @@ public class CreatePostHandler extends RequestHandler<CreatePostRequest, PostRes
     @Override
     @Transactional
     public PostResponse handle(CreatePostRequest request) {
-        // Validate current trip
         Account account = contextService.getLoggedInUser();
+        if (!account.getIsUpdated()) {
+            throw new InternalException(ResponseCode.POST_ERROR_UNUPDATED_ACCOUNT);
+        }
 
+        // Validate current trip
         Trip inProgressTrip = tripService.getCurrentTrip(account);
         if (inProgressTrip != null) {
             throw new InternalException(ResponseCode.TRIP_ERROR_ON_GOING_TRIP);
+        }
+
+        Vehicle vehicle = account.getVehicle();
+        if (TripRole.GRABBER.equals(request.getRole())
+                && (vehicle == null || !VehicleStatus.APPROVED.equals(vehicle.getStatus()))) {
+            throw new InternalException(ResponseCode.POST_ERROR_UNREGISTERED_VEHICLE);
         }
 
         // Validate time

@@ -97,7 +97,13 @@ public class ContextService {
                 return null;
             }
             String subjectId = loggedInToken.getSubject();
-            return accountService.getBySubjectId(subjectId);
+
+            Account account = accountService.getBySubjectId(subjectId);
+            if (account == null) {
+                throw new InternalException(ResponseCode.UNAUTHORIZED_REQUEST);
+            }
+
+            return account;
         } catch (Exception ex) {
             log.error("Get current login user failed, {}", ex.getMessage());
             throw new InternalException(ResponseCode.UNAUTHORIZED_REQUEST);

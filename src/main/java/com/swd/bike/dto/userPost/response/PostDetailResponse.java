@@ -1,5 +1,7 @@
 package com.swd.bike.dto.userPost.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swd.bike.common.BaseConstant;
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.dto.account.response.AccountResponse;
 import com.swd.bike.entity.Account;
@@ -24,8 +26,11 @@ public class PostDetailResponse extends BaseResponseData {
     private Long id;
     private TripRole role;
     private String description;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime startTime;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime modifiedAt;
     private PostStatus status;
     private AccountResponse author;

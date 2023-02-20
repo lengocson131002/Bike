@@ -8,18 +8,22 @@ import com.swd.bike.scheduler.ClearExpiredPostTask;
 import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.util.TimeUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService implements IPostService {
 
     private final PostRepository postRepository;
@@ -92,5 +96,16 @@ public class PostService implements IPostService {
         Instant clearTime = TimeUtils.convertLocalDateTimeToInstant(post.getStartTime());
         ClearExpiredPostTask task = new ClearExpiredPostTask(post.getId(), clearTime);
         schedulerService.schedule(task);
+    }
+
+    /**
+     * Scheduler execute every day to set post status to COMPETED if it is over time
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    @Transactional
+    public void clearExpiredPost() {
+        LocalDateTime now = LocalDateTime.now();
+        log.info("[SCHEDULING] Clear expired post at {}", now);
+        postRepository.setPostStatusAfterTime(PostStatus.COMPLETED, now);
     }
 }
