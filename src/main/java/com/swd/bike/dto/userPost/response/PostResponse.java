@@ -26,8 +26,9 @@ public class PostResponse extends BaseResponseData {
     private String description;
     @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime modifiedAt;
     private String authorId;
     private String authorName;

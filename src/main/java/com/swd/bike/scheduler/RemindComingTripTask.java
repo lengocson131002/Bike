@@ -1,9 +1,14 @@
 package com.swd.bike.scheduler;
 
+import com.swd.bike.common.BaseConstant;
+import com.swd.bike.common.NotificationConstant;
 import com.swd.bike.config.SpringContext;
+import com.swd.bike.dto.notification.dtos.NotificationDto;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.enums.TripStatus;
+import com.swd.bike.enums.notification.NotificationAction;
+import com.swd.bike.service.interfaces.IPushNotificationService;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -16,17 +21,19 @@ import java.time.Instant;
 
 @Slf4j
 public class RemindComingTripTask extends ScheduledTask {
-    private Long tripId;
+    private final Long tripId;
 
-    private ITripService tripService;
+    private final ITripService tripService;
 
-    private PlatformTransactionManager transactionManager;
+    private final PlatformTransactionManager transactionManager;
+    private final IPushNotificationService pushNotificationService;
 
     public RemindComingTripTask(Long tripId, Instant time) {
         super(time);
         this.tripId = tripId;
         this.tripService = SpringContext.getBean(ITripService.class);
         this.transactionManager = SpringContext.getBean(PlatformTransactionManager.class);
+        this.pushNotificationService = SpringContext.getBean(IPushNotificationService.class);
     }
 
     @Override
@@ -53,9 +60,29 @@ public class RemindComingTripTask extends ScheduledTask {
             Account passenger = trip.getPassenger();
 
             //Todo notification
+            pushNotificationService.sendTo(grabber.getId(), new NotificationDto()
+                    .setTitle(NotificationConstant.Title.IN_COMING_TRIP)
+                    .setBody(String.format(NotificationConstant.Body.IN_COMING_TRIP,
+                            passenger.getName(),
+                            trip.getStartStation().getName(),
+                            trip.getEndStation().getName(),
+                            BaseConstant.REMIND_TRIP_BEFORE_IN_MINUTES))
+                    .setAction(NotificationAction.OPEN_TRIP)
+                    .setReferenceId(tripId.toString())
+            );
 
-            log.info("User {} has a coming trip at {}", grabber.getName(), trip.getPostedStartTime());
-            log.info("User {} has a coming trip at {}", passenger.getName(), trip.getPostedStartTime());
+            pushNotificationService.sendTo(passenger.getId(), new NotificationDto()
+                    .setTitle(NotificationConstant.Title.IN_COMING_TRIP)
+                    .setBody(String.format(NotificationConstant.Body.IN_COMING_TRIP,
+                            grabber.getName(),
+                            trip.getStartStation().getName(),
+                            trip.getEndStation().getName(),
+                            BaseConstant.REMIND_TRIP_BEFORE_IN_MINUTES))
+                    .setAction(NotificationAction.OPEN_TRIP)
+                    .setReferenceId(tripId.toString())
+            );
+
+
         } catch (Exception ex) {
             log.error("[SCHEDULING] Remind trip with ID {} error: {}", tripId, ex.getMessage());
         }

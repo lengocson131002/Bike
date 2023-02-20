@@ -1,5 +1,7 @@
 package com.swd.bike.dto.userTrip.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swd.bike.common.BaseConstant;
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.dto.account.response.AccountResponse;
 import com.swd.bike.dto.userPost.response.PostResponse;
@@ -26,9 +28,13 @@ public class TripDetailResponse extends BaseResponseData {
     private Long id;
     private TripStatus status;
     private String description;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime startAt;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime finishAt;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime cancelAt;
     private Float feedbackPoint;
     private String feedbackContent;

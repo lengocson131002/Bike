@@ -7,8 +7,10 @@ import com.swd.bike.dto.userPost.response.PostResponse;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Post;
 import com.swd.bike.entity.Station;
+import com.swd.bike.entity.Vehicle;
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.enums.TripRole;
+import com.swd.bike.enums.VehicleStatus;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.ContextService;
 import com.swd.bike.service.interfaces.IPostService;
@@ -36,12 +38,14 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
     @Override
     @Transactional
     public PostResponse handle(UpdatePostRequest request) {
+        Account account = contextService.getLoggedInUser();
+
         Post post = postService.getPost(request.getId());
         if (!postService.isPostActive(post)) {
             throw new InternalException(ResponseCode.POST_ERROR_NOT_FOUND);
         }
 
-        if (!postService.isAuthor(contextService.getLoggedInUser(), post))  {
+        if (!postService.isAuthor(account, post))  {
             log.error("Current user is not post's author");
             throw new InternalException(ResponseCode.FAILED);
         }
@@ -61,6 +65,11 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
         TripRole role = request.getRole();
         if (role != null) {
             post.setRole(role);
+        }
+
+        Vehicle vehicle = account.getVehicle();
+        if (TripRole.GRABBER.equals(post.getRole()) && (vehicle == null || !VehicleStatus.APPROVED.equals(vehicle.getStatus()))) {
+            throw new InternalException(ResponseCode.POST_ERROR_UNREGISTERED_VEHICLE);
         }
 
         // Update start time

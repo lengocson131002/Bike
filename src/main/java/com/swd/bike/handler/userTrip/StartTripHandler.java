@@ -1,15 +1,19 @@
 package com.swd.bike.handler.userTrip;
 
+import com.swd.bike.common.NotificationConstant;
 import com.swd.bike.core.RequestHandler;
 import com.swd.bike.dto.common.StatusResponse;
+import com.swd.bike.dto.notification.dtos.NotificationDto;
 import com.swd.bike.dto.userTrip.request.StartTripRequest;
 import com.swd.bike.dto.userTrip.response.TripResponse;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.enums.TripStatus;
+import com.swd.bike.enums.notification.NotificationAction;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.ContextService;
+import com.swd.bike.service.interfaces.IPushNotificationService;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,6 +29,8 @@ public class StartTripHandler extends RequestHandler<StartTripRequest, StatusRes
     private final ITripService tripService;
 
     private final ContextService contextService;
+
+    private final IPushNotificationService pushNotificationService;
 
     @Override
     @Transactional
@@ -56,6 +62,18 @@ public class StartTripHandler extends RequestHandler<StartTripRequest, StatusRes
         trip.setStartAt(LocalDateTime.now());
 
         Trip savedTrip = tripService.save(trip);
+
+        // Todo notify to partner
+        String receivedUserId = Objects.equals(currentUser.getId(), grabber.getId())
+                ? passenger.getId()
+                : grabber.getId();
+
+        pushNotificationService.sendTo(receivedUserId, new NotificationDto()
+                .setTitle(NotificationConstant.Title.TRIP_STARTED)
+                .setBody(String.format(NotificationConstant.Body.TRIP_STARTED, currentUser.getName(), trip.getStartStation().getName(), trip.getEndStation().getName()))
+                .setAction(NotificationAction.OPEN_TRIP)
+                .setReferenceId(savedTrip.getId().toString())
+        );
 
         return new StatusResponse(savedTrip != null);
     }

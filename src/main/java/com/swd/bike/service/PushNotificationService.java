@@ -25,11 +25,16 @@ public class PushNotificationService implements IPushNotificationService {
 
     @Async
     boolean send(String topic, NotificationDto notification) {
-        if (notification == null || topic == null) {
-            log.error("Send notification failed.");
-            return false;
-        }
-        return kafkaProducer.send(topic, notification);
+       try {
+           if (notification == null || topic == null) {
+               log.error("Send notification failed.");
+               return false;
+           }
+           return kafkaProducer.send(topic, notification);
+       } catch (Exception ex) {
+          log.error("Send notification failed {}", ex.getMessage());
+       }
+       return false;
     }
 
 
