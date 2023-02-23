@@ -11,19 +11,28 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
 public class RedisConfig {
-    @Value("${redis.host:localhost}")
+    @Value("${spring.redis.host:localhost}")
     private String redisHost;
 
-    @Value("${redis.port:6379}")
+    @Value("${spring.redis.port:6379}")
     private int redisPort;
 
-    @Value("${redis.password:}")
+    @Value("${spring.redis.password}")
     private String redisPassword;
+
+    @Value("${spring.redis.username}")
+    private String redisUserName;
 
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName(redisHost);
+        config.setPort(redisPort);
+        config.setUsername(redisUserName);
+        config.setPassword(redisPassword);
+
+        return new LettuceConnectionFactory(config);
     }
 
     @Bean

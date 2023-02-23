@@ -23,13 +23,6 @@ keycloak-client:
   username: ${KEYCLOAK_CLIENT_USERNAME:}
   password: ${KEYCLOAK_CLIENT_PASSWORD:}
 
-##########################
-# REDIS
-##########################
-redis:
-  host: ${REDIS_HOST:http://localhost}
-  port: ${REDIS_PORT:6379}
-  password: ${REDIS_PASSWORD:}
 
 ##########################
 # DATASOURCE
@@ -72,6 +65,17 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+##########################
+# REDIS
+##########################
+  cache:
+    type: redis
+  redis:
+    host: ${REDIS_HOST:http://localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    username: ${REDIS_USERNAME:}
 
 
 ##########################
