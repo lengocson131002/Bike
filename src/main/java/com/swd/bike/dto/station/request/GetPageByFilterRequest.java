@@ -29,4 +29,14 @@ public class GetPageByFilterRequest extends BasePagingAndSortingRequestData {
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
+
+    @Override
+    public String toString() {
+        return "GetPageByFilterRequest: " +
+                this.partialName + "" +
+                this.getPageSize() + "" +
+                this.getPageNumber() + "" +
+                this.getSortBy() + "" +
+                this.getSortDirection();
+    }
 }
