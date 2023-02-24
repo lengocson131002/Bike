@@ -13,6 +13,7 @@ import com.swd.bike.enums.TripRole;
 import com.swd.bike.enums.VehicleStatus;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.ContextService;
+import com.swd.bike.service.StationService;
 import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.service.interfaces.IStationService;
 import com.swd.bike.service.interfaces.ITripService;
@@ -45,7 +46,7 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
             throw new InternalException(ResponseCode.POST_ERROR_NOT_FOUND);
         }
 
-        if (!postService.isAuthor(account, post))  {
+        if (!postService.isAuthor(account, post)) {
             log.error("Current user is not post's author");
             throw new InternalException(ResponseCode.FAILED);
         }
@@ -109,7 +110,8 @@ public class UpdatePostHandler extends RequestHandler<UpdatePostRequest, PostRes
             throw new InternalException(ResponseCode.POST_ERROR_INVALID_STATION);
         }
 
-        boolean isAllowedEndStation = post.getStartStation().getNextStation()
+        Station startStation = stationService.findStation(post.getStartStation().getId());
+        boolean isAllowedEndStation = startStation.getNextStation()
                 .stream()
                 .anyMatch(station -> station.getId().equals(post.getEndStation().getId()));
         if (!isAllowedEndStation) {

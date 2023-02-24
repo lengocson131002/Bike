@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -28,4 +29,14 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
             "SET post.status = ?1 " +
             "WHERE post IS NOT NULL AND post.startTime < ?2")
     void setPostStatusAfterTime(PostStatus status, LocalDateTime now);
+
+    @Override
+    @Query("SELECT p FROM Post p " +
+            "LEFT JOIN FETCH p.author " +
+            "LEFT JOIN FETCH p.startStation " +
+            "LEFT JOIN FETCH p.endStation " +
+            "LEFT JOIN FETCH p.applications " +
+            "LEFT JOIN FETCH p.trip " +
+            "WHERE p.id = :id")
+    Optional<Post> findById(@Param("id") Long id);
 }

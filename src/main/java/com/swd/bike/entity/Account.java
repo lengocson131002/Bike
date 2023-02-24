@@ -11,6 +11,7 @@ import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
 @FieldNameConstants
 @Accessors(chain = true)
 @Table(name = Account.COLLECTION_NAME)
-public class Account extends Auditable<String> {
+public class Account extends Auditable<String> implements Serializable{
 
     public static final String COLLECTION_NAME = "account";
 

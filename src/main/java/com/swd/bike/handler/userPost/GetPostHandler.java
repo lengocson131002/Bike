@@ -10,6 +10,8 @@ import com.swd.bike.service.interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
 @RequiredArgsConstructor
 public class GetPostHandler extends RequestHandler<GetPostRequest, PostDetailResponse> {
@@ -17,6 +19,7 @@ public class GetPostHandler extends RequestHandler<GetPostRequest, PostDetailRes
     private final IPostService postService;
 
     @Override
+    @Transactional
     public PostDetailResponse handle(GetPostRequest request) {
         Post post = postService.getPost(request.getPostId());
         if (post == null) {

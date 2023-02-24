@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = ExponentPushToken.COLLECTION_NAME)
-public class ExponentPushToken {
+public class ExponentPushToken implements Serializable {
 
     public static final String COLLECTION_NAME = "expo_token";
     @Id

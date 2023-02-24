@@ -9,12 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class AccountResponse extends BaseResponseData {
+public class AccountResponse extends BaseResponseData implements Serializable {
     private String id;
     private String avatar;
     private String card;

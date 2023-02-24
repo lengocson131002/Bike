@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 @Table(name = Station.COLLECTION_NAME)
 @EqualsAndHashCode(callSuper = true)
-public class Station extends Auditable<String> {
+public class Station extends Auditable<String> implements Serializable {
     public static final String COLLECTION_NAME = "station";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

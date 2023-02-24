@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,6 +20,7 @@ public class GetAllTripsHandler extends RequestHandler<GetAllTripsRequest, PageR
     private final ITripService tripService;
 
     @Override
+    @Transactional
     public PageResponse<TripResponse> handle(GetAllTripsRequest request) {
         Page<Trip> pageResult = tripService.getAllTrip(request.getSpecification(), request.getPageable());
         PageResponse<TripResponse> response = new PageResponse<>(pageResult);
