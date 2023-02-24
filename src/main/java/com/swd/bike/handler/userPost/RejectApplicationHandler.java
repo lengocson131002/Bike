@@ -14,7 +14,6 @@ import com.swd.bike.service.AccountService;
 import com.swd.bike.service.ContextService;
 import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.service.interfaces.IPushNotificationService;
-import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -49,7 +48,7 @@ public class RejectApplicationHandler extends RequestHandler<RejectApplicationRe
             throw new InternalException(ResponseCode.FAILED);
         }
 
-        Account rejectedApplier = accountService.findAccount(request.getApplierId());
+        Account rejectedApplier = accountService.getById(request.getApplierId());
         List<Account> applications = post.getApplications();
         if (applications == null) {
             applications = new ArrayList<>();

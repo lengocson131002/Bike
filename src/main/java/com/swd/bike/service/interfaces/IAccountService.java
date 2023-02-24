@@ -8,13 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Optional;
 
 public interface IAccountService {
-    Account findAccount(String id);
-
     Account save(Account account);
 
     Account getById(String id);
-
-    Account getDetailById(String id);
 
     String getIdBySubjectId(String subjectId);
     Account getBySubjectId(String subjectId);
