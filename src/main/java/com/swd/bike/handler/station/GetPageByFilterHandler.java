@@ -7,6 +7,7 @@ import com.swd.bike.dto.station.request.GetPageByFilterRequest;
 import com.swd.bike.entity.Station;
 import com.swd.bike.service.interfaces.IStationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class GetPageByFilterHandler extends RequestHandler<GetPageByFilterRequest, PageResponse<StationPageResponse>> {
     private final IStationService IStationService;
     @Override
+    @Cacheable(cacheNames = "pageStation", key = "#request.toString()")
     public PageResponse<StationPageResponse> handle(GetPageByFilterRequest request) {
         Page<Station> stations = IStationService.getStationPage(request.getSpecification(),request.getPageable());
 
