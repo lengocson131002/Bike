@@ -24,9 +24,9 @@ public class CreateStationHandler extends RequestHandler<CreateStationRequest, C
     public CreateStationResponse handle(CreateStationRequest request) {
 
         List<Station> nextStations = request.getNextStationIds().stream()
-                .map(stationId -> stationService.getRefById(stationId))
+                .map(stationService::getRefById)
                 .collect(Collectors.toList());
-        if (request.getNextStationIds().size() > 0 && !stationService.checkStationsActive(request.getNextStationIds())) {
+        if (!request.getNextStationIds().isEmpty() && !stationService.checkStationsActive(request.getNextStationIds())) {
             throw new InternalException(ResponseCode.STATION_IS_INACTIVE);
         }
 
@@ -40,7 +40,7 @@ public class CreateStationHandler extends RequestHandler<CreateStationRequest, C
                 .nextStation(nextStations)
                 .build();
         stationService.createOrUpdate(station);
-        CreateStationResponse response = CreateStationResponse.builder()
+        return CreateStationResponse.builder()
                 .id(station.getId())
                 .name(station.getName())
                 .address(station.getAddress())
@@ -50,10 +50,9 @@ public class CreateStationHandler extends RequestHandler<CreateStationRequest, C
                 .nextStationIds(station.getNextStation() == null
                         ? new ArrayList<>()
                         : station.getNextStation().stream()
-                        .map(stationEntity -> stationEntity.getId())
+                        .map(Station::getId)
                         .collect(Collectors.toList()))
                 .status(station.getStatus())
                 .build();
-        return response;
     }
 }
