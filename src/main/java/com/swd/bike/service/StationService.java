@@ -7,6 +7,10 @@ import com.swd.bike.exception.InternalException;
 import com.swd.bike.repository.StationRepository;
 import com.swd.bike.service.interfaces.IStationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,10 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StationService implements IStationService {
     private final StationRepository stationRepository;
 
     @Override
+    @CacheEvict(cacheNames = "station", key = "#station.id", condition = "#station.id != null")
     public Station createOrUpdate(Station station) {
         return stationRepository.save(station);
     }
@@ -30,7 +36,9 @@ public class StationService implements IStationService {
     }
 
     @Override
+    @Cacheable(cacheNames = "station", key = "#id")
     public Station getStationById(Long id) {
+        log.info("Detail Station Is Not Cached");
         return stationRepository.findById(id).orElseThrow(() -> new InternalException(ResponseCode.STATION_NOT_FOUND));
     }
 
@@ -43,21 +51,22 @@ public class StationService implements IStationService {
     @Override
     public boolean checkStationsActive(List<Long> ids) {
         List<Station> stations = stationRepository.findAllById(ids);
-        if (stations == null || stations.isEmpty()) {
+        if (stations.isEmpty()) {
             throw new InternalException(ResponseCode.STATION_NOT_FOUND);
         }
-        return stations != null && !stations.isEmpty() && stations.stream().allMatch(station -> station.getStatus().equals(StationStatus.ACTIVE));
+        return stations.stream().allMatch(station -> station.getStatus().equals(StationStatus.ACTIVE));
     }
 
     @Override
+    @Cacheable(cacheNames = "pageStation")
     public Page<Station> getStationPage(Specification<Station> specification, Pageable pageable) {
         return stationRepository.findAll(specification, pageable);
     }
 
     @Override
+    @Cacheable(cacheNames = "listStation", key = "#ids")
     public List<Station> findAllByIds(List<Long> ids) {
-        List<Station> result = stationRepository.findAllById(ids);
-        return result == null ? new ArrayList<>() : result;
+        return stationRepository.findAllById(ids);
     }
 
     @Override
@@ -75,6 +84,7 @@ public class StationService implements IStationService {
     }
 
     @Override
+    @Cacheable(cacheNames = "listStation")
     public List<Station> getAllStations() {
         return stationRepository.findAll();
     }

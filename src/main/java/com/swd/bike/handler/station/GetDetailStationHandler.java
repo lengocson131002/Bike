@@ -7,6 +7,7 @@ import com.swd.bike.dto.station.request.GetDetailRequest;
 import com.swd.bike.entity.Station;
 import com.swd.bike.service.interfaces.IStationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GetDetailStationHandler extends RequestHandler<GetDetailRequest, GetDetailResponse> {
     private final IStationService IStationService;
     @Override

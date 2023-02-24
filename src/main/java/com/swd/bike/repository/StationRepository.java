@@ -15,6 +15,9 @@ import java.util.Optional;
 
 @Repository
 public interface StationRepository extends JpaRepository<Station, Long>, JpaSpecificationExecutor<Station> {
+    @Override
+    @Query("Select s from Station s left join fetch s.nextStation where s.id = :id")
+    Optional<Station> findById(Long id);
     Page<Station> findAll(Specification<Station> specification, Pageable pageable);
     Optional<Station> findStationByIdAndStatus(Long id, StationStatus status);
 
