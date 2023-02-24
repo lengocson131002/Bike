@@ -1,12 +1,13 @@
 package com.swd.bike.service;
 
 import com.swd.bike.entity.Account;
-import com.swd.bike.enums.ResponseCode;
-import com.swd.bike.exception.InternalException;
 import com.swd.bike.repository.AccountRepository;
 import com.swd.bike.service.interfaces.IAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,41 +23,35 @@ public class AccountService implements IAccountService {
     private final AccountRepository accountRepository;
 
     @Override
-    public Account findAccount(String id) {
-        if (id == null) {
-            return null;
-        }
-        return accountRepository
-                .findById(id)
-                .orElse(null);
-    }
-
-    @Override
+    @Caching(evict = {
+            @CacheEvict(value = "account", key = "#account.id", condition = "#account != null && #account.id != null"),
+            @CacheEvict(value = "accounts", allEntries = true, condition = "#account != null && #account.id != null")
+    })
     public Account save(Account account) {
         return accountRepository.save(account);
     }
 
     @Override
+    @Cacheable(value = "account", key = "#id", condition = "#id != null")
     public Account getById(String id) {
+
         return accountRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Account getDetailById(String id) {
-        return accountRepository.findById(id).orElseThrow(() -> new InternalException(ResponseCode.ACCOUNT_NOT_FOUND));
-    }
-
-    @Override
+    @Cacheable(value = "accountId", key = "#subjectId", condition = "#subjectId != null")
     public String getIdBySubjectId(String subjectId) {
         return accountRepository.findIdBySubjectId(subjectId).orElse(null);
     }
 
     @Override
+    @Cacheable(value = "accountSubjectId", key = "#subjectId", condition = "#subjectId != null")
     public Account getBySubjectId(String subjectId) {
         return accountRepository.findBySubjectId(subjectId);
     }
 
     @Override
+    @Cacheable(value = "subjectIdOpt", key = "#subjectId", condition = "#subjectId != null")
     public Optional<String> getIdBySubjectIdOpt(String subjectId) {
         return accountRepository.findIdBySubjectId(subjectId);
     }

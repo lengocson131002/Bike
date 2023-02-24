@@ -1,10 +1,7 @@
 package com.swd.bike.core;
 
 import com.swd.bike.common.PagingAndSortConstant;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +10,7 @@ import org.springframework.data.domain.Sort;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = false)
 public class BasePagingAndSortingRequestData extends BaseRequestData {
     private Integer pageSize = PagingAndSortConstant.DEFAULT_PAGE_SIZE;
     private Integer pageNumber = PagingAndSortConstant.DEFAULT_PAGE_NUMBER;

@@ -15,7 +15,6 @@ import com.swd.bike.enums.TripStatus;
 import com.swd.bike.enums.notification.NotificationAction;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.ContextService;
-import com.swd.bike.service.PushNotificationService;
 import com.swd.bike.service.interfaces.IAccountService;
 import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.service.interfaces.IPushNotificationService;
@@ -54,7 +53,7 @@ public class AcceptApplicationHandler extends RequestHandler<AcceptApplicationRe
             throw new InternalException(ResponseCode.FAILED);
         }
 
-        Account acceptedApplier = accountService.findAccount(request.getApplierId());
+        Account acceptedApplier = accountService.getById(request.getApplierId());
         List<Account> applications = post.getApplications();
         if (applications == null) {
             applications = new ArrayList<>();

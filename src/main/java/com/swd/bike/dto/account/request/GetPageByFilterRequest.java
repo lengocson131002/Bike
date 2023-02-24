@@ -2,12 +2,8 @@ package com.swd.bike.dto.account.request;
 
 import com.swd.bike.core.BasePagingAndSortingRequestData;
 import com.swd.bike.entity.Account;
-import com.swd.bike.entity.Station;
 import com.swd.bike.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Slf4j
+@ToString(callSuper = true)
 public class GetPageByFilterRequest extends BasePagingAndSortingRequestData {
     private String partialName;
     private String phone;

@@ -7,6 +7,7 @@ import com.swd.bike.dto.trip.QueryTripModel;
 import com.swd.bike.dto.trip.TripModel;
 import com.swd.bike.dto.vehicle.VehicleModel;
 import com.swd.bike.entity.Account;
+import com.swd.bike.entity.ExponentPushToken;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.entity.Vehicle;
 import com.swd.bike.enums.ResponseCode;
@@ -25,13 +26,15 @@ import java.util.stream.Collectors;
 public class GetDetailAccountHandler extends RequestHandler<GetDetailRequest, GetAccountDetailResponse> {
     private final ITripService tripService;
     private final AccountService accountService;
+
     @Override
     public GetAccountDetailResponse handle(GetDetailRequest request) {
         // call service method get account role USER
-        Account account = accountService.getDetailById(request.getId());
-        if (!account.getRole().equals(Role.USER)) {
+        Account account = accountService.getById(request.getId());
+        if (account == null || !account.getRole().equals(Role.USER)) {
             throw new InternalException(ResponseCode.ACCOUNT_NOT_FOUND);
         }
+        List<ExponentPushToken> exponentPushToken = account.getTokens();
         // call service method get trip
         QueryTripModel queryTripModel = QueryTripModel.builder()
                 .grabberId(account.getId())

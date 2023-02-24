@@ -7,6 +7,7 @@ import com.swd.bike.dto.common.PageResponse;
 import com.swd.bike.entity.Account;
 import com.swd.bike.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class GetPageAccountByFilterHandler extends RequestHandler<GetPageByFilte
     private final AccountService accountService;
 
     @Override
+    @Cacheable(cacheNames = "accounts", key = "#request.toString()")
     public PageResponse<AccountPageResponse> handle(GetPageByFilterRequest request) {
         Page<Account> accountPage = accountService.getAccountsByFilter(request.getSpecification(), request.getPageable());
         PageResponse<AccountPageResponse> response = new PageResponse<>(accountPage);
