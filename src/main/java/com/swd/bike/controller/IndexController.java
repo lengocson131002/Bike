@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController extends BaseController implements IIndexController {
     @Override
     public ResponseEntity<ResponseBase<PageResponse<PostResponse>>> getAllIndexPosts(GetActivePostsRequest request) {
+        request.setExceptUserId(getUserId());
         return this.execute(request);
     }
 
