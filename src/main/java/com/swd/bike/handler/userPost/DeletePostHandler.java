@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -40,7 +39,7 @@ public class DeletePostHandler extends RequestHandler<DeletePostRequest, PostRes
             throw new InternalException(ResponseCode.POST_ERROR_NOT_FOUND);
         }
 
-        if (!postService.isAuthor(contextService.getLoggedInUser(), post))  {
+        if (!postService.isAuthor(contextService.getLoggedInUser(), post)) {
             log.error("Current user is not post's author");
             throw new InternalException(ResponseCode.FAILED);
         }

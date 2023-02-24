@@ -10,6 +10,7 @@ import com.swd.bike.enums.ResponseCode;
 import com.swd.bike.exception.InternalException;
 import com.swd.bike.service.interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;

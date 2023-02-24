@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = Trip.COLLECTION_NAME)
-public class Trip extends Auditable<String> {
+public class Trip extends Auditable<String> implements Serializable {
 
     public static final String COLLECTION_NAME = "trip";
 

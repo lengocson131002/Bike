@@ -71,11 +71,13 @@ spring:
 ##########################
   cache:
     type: redis
+    redis:
+      key-prefix: redis_bike_
+      time-to-live: ${REDIS_TIMEOUT:1d}
   redis:
-    host: ${REDIS_HOST:http://localhost}
+    host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:}
-    username: ${REDIS_USERNAME:}
 
 
 ##########################

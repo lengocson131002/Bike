@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.stereotype.Repository;
 
@@ -35,4 +36,14 @@ public interface TripRepository extends JpaRepository<Trip, Long>,
     Integer countByGrabberIdAndFeedbackPointNotNull(String accountId);
     List<Trip> findTripsByGrabber(Account account);
     List<Trip> findTripsByPassenger(Account account);
+
+    @Override
+    @Query( "SELECT t FROM Trip t " +
+            "LEFT JOIN FETCH t.passenger " +
+            "LEFT JOIN FETCH t.grabber " +
+            "LEFT JOIN FETCH t.startStation " +
+            "LEFT JOIN FETCH t.endStation " +
+            "LEFT JOIN FETCH t.post " +
+            "WHERE t.id = :id")
+    Optional<Trip> findById(@Param("id") Long id);
 }

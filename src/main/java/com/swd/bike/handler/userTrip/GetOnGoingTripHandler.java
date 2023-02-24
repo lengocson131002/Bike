@@ -13,6 +13,8 @@ import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
 @RequiredArgsConstructor
 public class GetOnGoingTripHandler extends RequestHandler<GetOnGoingTripRequest, TripDetailResponse> {
@@ -22,6 +24,7 @@ public class GetOnGoingTripHandler extends RequestHandler<GetOnGoingTripRequest,
     private final ContextService contextService;
 
     @Override
+    @Transactional
     public TripDetailResponse handle(GetOnGoingTripRequest request) {
         Account currentUser = contextService.getLoggedInUser();
         if (currentUser == null) {

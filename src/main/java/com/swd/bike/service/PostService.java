@@ -1,5 +1,6 @@
 package com.swd.bike.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swd.bike.entity.Account;
 import com.swd.bike.entity.Post;
 import com.swd.bike.enums.PostStatus;
@@ -9,6 +10,8 @@ import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.util.TimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -56,11 +59,13 @@ public class PostService implements IPostService {
     }
 
     @Override
+    @CacheEvict(value = "post", key = "#post.id", condition = "#post != null && #post.id != null")
     public Post savePost(Post post) {
         return postRepository.save(post);
     }
 
     @Override
+    @Cacheable(value = "post", key = "#id", condition = "#id != null")
     public Post getPost(Long id) {
         if (id == null) {
             return null;

@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -20,7 +21,7 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Table(name = Vehicle.COLLECTION_NAME)
 @FieldNameConstants
-public class Vehicle extends Auditable<String> {
+public class Vehicle extends Auditable<String> implements Serializable {
 
     public static final String COLLECTION_NAME = "vehicle";
 

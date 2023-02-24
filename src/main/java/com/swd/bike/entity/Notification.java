@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @FieldNameConstants
 @Accessors(chain = true)
 @Table(name = Notification.COLLECTION_NAME)
-public class Notification {
+public class Notification implements Serializable {
     public static final String COLLECTION_NAME = "notification";
 
     @Id

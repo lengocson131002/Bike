@@ -14,6 +14,8 @@ import com.swd.bike.service.interfaces.IPostService;
 import com.swd.bike.service.interfaces.IStationService;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;

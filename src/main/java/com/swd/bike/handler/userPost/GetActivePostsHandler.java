@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,6 +20,7 @@ public class GetActivePostsHandler extends RequestHandler<GetActivePostsRequest,
     private final IPostService postService;
 
     @Override
+    @Transactional
     public PageResponse<PostResponse> handle(GetActivePostsRequest request) {
         Page<Post> pageResult = postService.getAllPosts(request.getSpecification(), request.getPageable());
         PageResponse<PostResponse> response = new PageResponse<>(pageResult);

@@ -10,6 +10,8 @@ import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
 @RequiredArgsConstructor
 public class GetTripHandler extends RequestHandler<GetTripRequest, TripDetailResponse> {
@@ -17,6 +19,7 @@ public class GetTripHandler extends RequestHandler<GetTripRequest, TripDetailRes
     private final ITripService tripService;
 
     @Override
+    @Transactional
     public TripDetailResponse handle(GetTripRequest request) {
         Trip trip = tripService.getTrip(request.getId());
         if (trip == null) {
