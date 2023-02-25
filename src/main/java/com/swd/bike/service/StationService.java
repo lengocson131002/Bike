@@ -28,7 +28,8 @@ public class StationService implements IStationService {
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = {"station"}, key = "#station.id", condition = "#station.id != null"),
-            @CacheEvict(cacheNames = "pageStation", allEntries = true)
+            @CacheEvict(cacheNames = "pageStation", allEntries = true),
+            @CacheEvict(cacheNames = "listStation", allEntries = true)
     })
     public Station createOrUpdate(Station station) {
         return stationRepository.save(station);

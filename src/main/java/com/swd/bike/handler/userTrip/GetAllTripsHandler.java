@@ -7,6 +7,7 @@ import com.swd.bike.dto.userTrip.response.TripResponse;
 import com.swd.bike.entity.Trip;
 import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class GetAllTripsHandler extends RequestHandler<GetAllTripsRequest, PageR
 
     @Override
     @Transactional
+    @Cacheable(value = "pageTrips", key = "#request.toString()", condition = "#request != null")
     public PageResponse<TripResponse> handle(GetAllTripsRequest request) {
         Page<Trip> pageResult = tripService.getAllTrip(request.getSpecification(), request.getPageable());
         PageResponse<TripResponse> response = new PageResponse<>(pageResult);

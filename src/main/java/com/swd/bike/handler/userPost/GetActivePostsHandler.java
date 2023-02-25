@@ -7,6 +7,7 @@ import com.swd.bike.dto.userPost.response.PostResponse;
 import com.swd.bike.entity.Post;
 import com.swd.bike.service.interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class GetActivePostsHandler extends RequestHandler<GetActivePostsRequest,
 
     @Override
     @Transactional
+    @Cacheable(value = "pagePosts", key = "#request.toString()", condition = "#request != null")
     public PageResponse<PostResponse> handle(GetActivePostsRequest request) {
         Page<Post> pageResult = postService.getAllPosts(request.getSpecification(), request.getPageable());
         PageResponse<PostResponse> response = new PageResponse<>(pageResult);

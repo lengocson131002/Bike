@@ -25,7 +25,7 @@ public class AccountService implements IAccountService {
     @Override
     @Caching(evict = {
             @CacheEvict(value = "account", key = "#account.id", condition = "#account != null && #account.id != null"),
-            @CacheEvict(value = "accounts", allEntries = true, condition = "#account != null && #account.id != null")
+            @CacheEvict(value = "accounts", allEntries = true)
     })
     public Account save(Account account) {
         return accountRepository.save(account);

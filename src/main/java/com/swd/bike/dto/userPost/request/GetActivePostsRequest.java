@@ -102,4 +102,23 @@ public class GetActivePostsRequest extends PagingFilterRequest {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
+
+    @Override
+    public String toString() {
+        return "GetActivePostsRequest{" +
+                "query='" + query + '\'' +
+                ", startStationId=" + startStationId +
+                ", endStationId=" + endStationId +
+                ", authorEmail='" + authorEmail + '\'' +
+                ", startFrom=" + startFrom +
+                ", startTo=" + startTo +
+                ", role=" + role +
+                ", exceptUserId='" + exceptUserId + '\'' +
+                ", status=" + status +
+                ", pageNumber=" + getPage() +
+                ", pageSize=" + getPageSize() +
+                ", sortBy=" + getSortBy() +
+                ", sortDirection" + getSortDir().toString() +
+                '}';
+    }
 }

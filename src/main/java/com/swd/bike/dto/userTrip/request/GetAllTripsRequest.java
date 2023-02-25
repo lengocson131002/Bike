@@ -90,4 +90,19 @@ public class GetAllTripsRequest extends PagingFilterRequest {
         };
     }
 
+    @Override
+    public String toString() {
+        return "GetAllTripsRequest{" +
+                "query='" + query + '\'' +
+                ", startStationId='" + startStationId + '\'' +
+                ", endStationId='" + endStationId + '\'' +
+                ", status=" + status +
+                ", startFrom=" + startFrom +
+                ", startTo=" + startTo +
+                ", pageNumber=" + getPage()+
+                ", pageSize=" + getPageSize() +
+                ", sortBy=" + getSortBy() +
+                ", sortDir=" + getSortDir().toString() +
+                '}';
+    }
 }
