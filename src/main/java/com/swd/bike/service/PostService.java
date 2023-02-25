@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +60,10 @@ public class PostService implements IPostService {
     }
 
     @Override
-    @CacheEvict(value = "post", key = "#post.id", condition = "#post != null && #post.id != null")
+    @Caching(evict = {
+            @CacheEvict(value = "pagePosts", allEntries = true),
+            @CacheEvict(value = "post", key = "#post.id", condition = "#post != null && #post.id != null")
+    })
     public Post savePost(Post post) {
         return postRepository.save(post);
     }

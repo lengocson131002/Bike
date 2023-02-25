@@ -14,6 +14,7 @@ import com.swd.bike.util.TimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -84,7 +85,10 @@ public class TripService implements ITripService {
     }
 
     @Override
-    @CacheEvict(value = "trip", key = "#trip.id", condition = "#trip != null && #trip.id != null")
+    @Caching(evict = {
+            @CacheEvict(value = "pageTrips", allEntries = true),
+            @CacheEvict(value = "trip", key = "#trip.id", condition = "#trip != null && #trip.id != null")
+    })
     public Trip save(Trip trip) {
         return tripRepository.save(trip);
     }
