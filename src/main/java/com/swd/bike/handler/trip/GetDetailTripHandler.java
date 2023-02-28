@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -18,6 +19,7 @@ import java.time.ZoneOffset;
 public class GetDetailTripHandler extends RequestHandler<GetTripDetailRequest, GetTripDetailResponse> {
     private final ITripService tripService;
     @Override
+    @Transactional
     public GetTripDetailResponse handle(GetTripDetailRequest request) {
         Trip trip = tripService.getDetailById(request.getId());
         return GetTripDetailResponse.builder()
@@ -41,6 +43,7 @@ public class GetDetailTripHandler extends RequestHandler<GetTripDetailRequest, G
                 .startStationName(trip.getStartStation().getName())
                 .endStationId(trip.getEndStation().getId())
                 .endStationName(trip.getEndStation().getName())
+                .postedStartTime(trip.getPostedStartTime())
                 .build();
     }
 }

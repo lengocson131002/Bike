@@ -35,6 +35,8 @@ public class TripResponse extends BaseResponseData {
     private String startStation;
     private Long endStationId;
     private String endStation;
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
+    private LocalDateTime postedStartTime;
 
     public TripResponse(Trip trip)  {
         assert trip != null;
@@ -47,6 +49,7 @@ public class TripResponse extends BaseResponseData {
         this.cancelAt = trip.getCancelAt();
         this.feedbackPoint = trip.getFeedbackPoint();
         this.feedbackContent = trip.getFeedbackContent();
+        this.postedStartTime = trip.getPostedStartTime();
 
         Station sStation = trip.getStartStation();
         if (sStation != null) {
