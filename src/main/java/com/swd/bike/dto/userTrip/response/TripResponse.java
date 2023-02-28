@@ -36,6 +36,8 @@ public class TripResponse extends BaseResponseData {
     private Long endStationId;
     private String endStation;
 
+    private LocalDateTime postedStartTime;
+
     public TripResponse(Trip trip)  {
         assert trip != null;
         this.id = trip.getId();
@@ -47,6 +49,7 @@ public class TripResponse extends BaseResponseData {
         this.cancelAt = trip.getCancelAt();
         this.feedbackPoint = trip.getFeedbackPoint();
         this.feedbackContent = trip.getFeedbackContent();
+        this.postedStartTime = trip.getPostedStartTime();
 
         Station sStation = trip.getStartStation();
         if (sStation != null) {
