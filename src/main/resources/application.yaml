@@ -40,7 +40,7 @@ spring:
             non_contextual_creation: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-        show_sql: false
+        show_sql: true
     hibernate:
       ddl-auto: update
   kafka:

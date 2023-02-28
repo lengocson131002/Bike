@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,4 +40,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
             "LEFT JOIN FETCH p.trip " +
             "WHERE p.id = :id")
     Optional<Post> findById(@Param("id") Long id);
+
+    List<Post> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
 }
