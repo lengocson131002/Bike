@@ -2,6 +2,7 @@ package com.swd.bike.repository;
 
 import com.swd.bike.entity.Account;
 import com.swd.bike.enums.Role;
+import net.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +24,9 @@ public interface AccountRepository extends JpaRepository<Account, String>, JpaSp
 
     @Query("SELECT a.id FROM Account a WHERE a.subjectId = ?1")
     Optional<String> findIdBySubjectId(String id);
+    List<Account> findDistinctTop5ByCreatedAtBetweenOrderByAveragePointDesc(LocalDateTime from, LocalDateTime to);
 
+    int countAccountsByIsUpdatedAndRoleAndCreatedAtBetween(boolean isUpdated, Role role, LocalDateTime from, LocalDateTime to);
     Account findBySubjectId(String subjectId);
 
 }
