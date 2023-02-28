@@ -32,4 +32,5 @@ public class GetTripDetailResponse extends BaseResponseData {
     public String startStationName;
     public Long endStationId;
     public String endStationName;
+    public LocalDateTime postedStartTime;
 }

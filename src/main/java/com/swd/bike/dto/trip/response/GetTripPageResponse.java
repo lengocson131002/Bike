@@ -30,5 +30,6 @@ public class GetTripPageResponse extends BaseResponseData {
     public String startStationName;
     public Long endStationId;
     public String endStationName;
+    public LocalDateTime postedStartTime;
 
 }
