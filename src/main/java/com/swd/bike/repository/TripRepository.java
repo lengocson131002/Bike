@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,4 +47,6 @@ public interface TripRepository extends JpaRepository<Trip, Long>,
             "LEFT JOIN FETCH t.post " +
             "WHERE t.id = :id")
     Optional<Trip> findById(@Param("id") Long id);
+
+    int countByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
 }

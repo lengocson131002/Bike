@@ -45,7 +45,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/api/*/auth/**",
                         "/api/**/public/**",
                         "/ws/**",
-                        "/api/**/public/**"
+                        "/api/**/public/**",
+                        "/api/**"
                 ).permitAll()
                 .antMatchers("/api/*/users/**")
                 .hasRole(Role.USER.toString())
