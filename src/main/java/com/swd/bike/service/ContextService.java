@@ -7,7 +7,9 @@ import com.swd.bike.service.interfaces.IAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
+import org.keycloak.TokenVerifier;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -28,7 +30,6 @@ import java.util.Set;
 public class ContextService {
 
     private final IAccountService accountService;
-
     @Value("${keycloak.resource}")
     private String keycloakClientId;
 
@@ -92,11 +93,29 @@ public class ContextService {
     public Account getLoggedInUser() {
         try {
             AccessToken loggedInToken = getLoggedInAccessToken();
-            if (loggedInToken == null) {
+            return getLoggedInUser(loggedInToken);
+        } catch (Exception ex) {
+            log.error("Get current login user failed, {}", ex.getMessage());
+            throw new InternalException(ResponseCode.UNAUTHORIZED_REQUEST);
+        }
+    }
+
+    public Account getLoggedInUser(String jwt) {
+        try {
+            AccessToken token = TokenVerifier.create(jwt, AccessToken.class).getToken();
+            return getLoggedInUser(token);
+        } catch (VerificationException e) {
+            return null;
+        }
+    }
+
+    public Account getLoggedInUser(AccessToken token) {
+        try {
+            if (token == null) {
                 log.info("Unauthorized request");
                 return null;
             }
-            String subjectId = loggedInToken.getSubject();
+            String subjectId = token.getSubject();
 
             Account account = accountService.getBySubjectId(subjectId);
             if (account == null) {

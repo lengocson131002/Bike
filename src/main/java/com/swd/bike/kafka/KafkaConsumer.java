@@ -2,16 +2,19 @@ package com.swd.bike.kafka;
 
 
 import com.swd.bike.common.BaseConstant;
+import com.swd.bike.dto.message.UpdateLocationMessage;
+import com.swd.bike.dto.message.UpdateLocationResponse;
 import com.swd.bike.dto.notification.dtos.NotificationDto;
+import com.swd.bike.dto.notification.dtos.NotificationMessage;
+import com.swd.bike.entity.Trip;
 import com.swd.bike.service.ExpoService;
 import com.swd.bike.service.ExponentPushTokenService;
 import com.swd.bike.service.interfaces.INotificationService;
+import com.swd.bike.service.interfaces.ITripService;
 import com.swd.bike.util.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -24,23 +27,23 @@ public class KafkaConsumer {
     private final ExponentPushTokenService exponentPushTokenService;
     private final ExpoService expoService;
     private final INotificationService notificationService;
+    private final ITripService tripService;
 
     @KafkaListener(topics = BaseConstant.KAFKA_CHANNEL_PUBLIC, groupId = BaseConstant.KAFKA_GROUP_ID)
-    public void consume(String message) {
-        NotificationDto notification = JsonUtil.INSTANCE.getObject(message, NotificationDto.class);
+    public void consumeNotificationPublic(String message) {
+        NotificationMessage notification = JsonUtil.INSTANCE.getObject(message, NotificationMessage.class);
         if (notification == null) {
             log.error("Send notification failed.");
             return;
         }
         log.info("Received public message: " + message);
-
         // Push notification to public
-        this.pushPublic(notification);
+        this.pushPublic(new NotificationDto(notification));
     }
 
-    @KafkaListener(topicPattern = BaseConstant.KAFKA_CHANNEL_USER_PATTERN, groupId = BaseConstant.KAFKA_GROUP_ID)
-    public void consume(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        NotificationDto notification = JsonUtil.INSTANCE.getObject(message, NotificationDto.class);
+    @KafkaListener(topics = BaseConstant.KAFKA_CHANNEL_USER, groupId = BaseConstant.KAFKA_GROUP_ID)
+    public void consumeNotificationPrivate(String message) {
+        NotificationMessage notification = JsonUtil.INSTANCE.getObject(message, NotificationMessage.class);
         if (notification == null) {
             log.error("Send notification failed.");
             return;
@@ -48,7 +51,27 @@ public class KafkaConsumer {
         log.info("Received user message: " + message);
 
         // Push notification to user
-        this.pushUser(this.getAccountId(topic), notification);
+        this.pushUser(notification.getAccountId(), new NotificationDto(notification));
+    }
+
+    @KafkaListener(topics = BaseConstant.KAFKA_CHANNEL_TRIP, groupId = BaseConstant.KAFKA_GROUP_ID)
+    public void consumeLocation(String message) {
+        log.info("Received update location message: " + message);
+
+        UpdateLocationMessage updateLocationMessage = JsonUtil.INSTANCE.getObject(message, UpdateLocationMessage.class);
+        if (updateLocationMessage == null) {
+            log.error("Update location failed.");
+            return;
+        }
+
+        Trip trip = tripService.getTrip(updateLocationMessage.getTripId());
+        if (trip == null) {
+            log.error("trip not found.");
+            return;
+        }
+
+        // Push notification to user
+        template.convertAndSend(String.format("/trip/%s/location", trip.getId()), new UpdateLocationResponse(updateLocationMessage));
     }
 
     @Async
@@ -75,8 +98,5 @@ public class KafkaConsumer {
         notificationService.saveUser(accountId, notificationDto);
     }
 
-    private String getAccountId(String topic) {
-        return topic.replace(BaseConstant.KAFKA_CHANNEL_USER_PREFIX, "");
-    }
 }
 
