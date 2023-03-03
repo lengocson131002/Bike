@@ -28,7 +28,7 @@ public class MapController {
     @Autowired
     private KafkaAdmin kafkaAdmin;
 
-    @MessageMapping("/trip/update-location")
+    @MessageMapping("/update-location")
     public void updateLocation(@Payload UpdateLocationRequest request, @Header(HttpHeaders.AUTHORIZATION) String token) {
         if (request == null || token == null) {
             log.error("Authorization fail");
