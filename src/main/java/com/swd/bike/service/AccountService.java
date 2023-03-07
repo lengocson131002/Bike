@@ -26,38 +26,39 @@ public class AccountService implements IAccountService {
     @Caching(evict = {
             @CacheEvict(value = "account", key = "#account.id", condition = "#account != null && #account.id != null"),
             @CacheEvict(value = "accounts", allEntries = true),
-            @CacheEvict(value = "accountSubjectId", key = "#account.id", condition = "#account != null && #account.id != null")})
+            @CacheEvict(value = "accountSubjectId", key = "#account.subjectId", condition = "#account != null && #account.subjectId != null"),
+            @CacheEvict(value = "subjectIdOpt", key = "#account.subjectId", condition = "#account != null && #account.subjectId != null")})
     public Account save(Account account) {
-            return accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
-        @Override
-        @Cacheable(value = "account", key = "#id", condition = "#id != null")
-        public Account getById(String id) {
+    @Override
+    @Cacheable(value = "account", key = "#id", condition = "#id != null")
+    public Account getById(String id) {
 
-                return accountRepository.findById(id).orElse(null);
-        }
+        return accountRepository.findById(id).orElse(null);
+    }
 
-        @Override
-        @Cacheable(value = "accountId", key = "#subjectId", condition = "#subjectId != null")
-        public String getIdBySubjectId(String subjectId) {
-                return accountRepository.findIdBySubjectId(subjectId).orElse(null);
-        }
+    @Override
+    @Cacheable(value = "accountId", key = "#subjectId", condition = "#subjectId != null")
+    public String getIdBySubjectId(String subjectId) {
+        return accountRepository.findIdBySubjectId(subjectId).orElse(null);
+    }
 
-        @Override
-        @Cacheable(value = "accountSubjectId", key = "#subjectId", condition = "#subjectId != null")
-        public Account getBySubjectId(String subjectId) {
-                return accountRepository.findFirstBySubjectId(subjectId);
-        }
+    @Override
+    @Cacheable(value = "accountSubjectId", key = "#subjectId", condition = "#subjectId != null")
+    public Account getBySubjectId(String subjectId) {
+        return accountRepository.findFirstBySubjectId(subjectId);
+    }
 
-        @Override
-        @Cacheable(value = "subjectIdOpt", key = "#subjectId", condition = "#subjectId != null")
-        public Optional<String> getIdBySubjectIdOpt(String subjectId) {
-                return accountRepository.findIdBySubjectId(subjectId);
-        }
+    @Override
+    @Cacheable(value = "subjectIdOpt", key = "#subjectId", condition = "#subjectId != null")
+    public Optional<String> getIdBySubjectIdOpt(String subjectId) {
+        return accountRepository.findIdBySubjectId(subjectId);
+    }
 
-        @Override
-        public Page<Account> getAccountsByFilter(Specification<Account> specification, Pageable pageable) {
-                return accountRepository.findAll(specification, pageable);
-        }
+    @Override
+    public Page<Account> getAccountsByFilter(Specification<Account> specification, Pageable pageable) {
+        return accountRepository.findAll(specification, pageable);
+    }
 }
