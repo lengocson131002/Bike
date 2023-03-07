@@ -47,7 +47,7 @@ public class AccountService implements IAccountService {
     @Override
     @Cacheable(value = "accountSubjectId", key = "#subjectId", condition = "#subjectId != null")
     public Account getBySubjectId(String subjectId) {
-        return accountRepository.findBySubjectId(subjectId);
+        return accountRepository.findFirstBySubjectId(subjectId);
     }
 
     @Override
