@@ -22,6 +22,8 @@ public class VehicleResponse extends BaseResponseData {
     private String color;
     private String image;
     private String description;
+    private String ownerId;
+    private String ownerName;
     private VehicleType type;
     private VehicleStatus status;
 
@@ -31,7 +33,7 @@ public class VehicleResponse extends BaseResponseData {
             return null;
         }
 
-        return new VehicleResponse()
+        VehicleResponse response = new VehicleResponse()
                 .setId(vehicle.getId())
                 .setBrand(vehicle.getBrand())
                 .setColor(vehicle.getColor())
@@ -40,5 +42,12 @@ public class VehicleResponse extends BaseResponseData {
                 .setDescription(vehicle.getDescription())
                 .setType(vehicle.getType())
                 .setStatus(vehicle.getStatus());
+        
+        if (vehicle.getOwner() != null) {
+            response.setOwnerId(vehicle.getOwner().getId())
+                    .setOwnerName(vehicle.getOwner().getName());
+        }
+
+        return response;
     }
 }
