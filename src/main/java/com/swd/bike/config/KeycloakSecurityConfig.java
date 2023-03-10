@@ -44,7 +44,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/swagger-resources/**",
                         "/api/*/auth/**",
                         "/api/**/public/**",
-                        "/ws/**"
+                        "/ws/**",
+                        "/api/**/public/**"
                 ).permitAll()
                 .antMatchers("/api/*/users/**")
                 .hasRole(Role.USER.toString())
