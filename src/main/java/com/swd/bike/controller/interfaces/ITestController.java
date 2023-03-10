@@ -2,6 +2,7 @@ package com.swd.bike.controller.interfaces;
 
 import com.swd.bike.core.ResponseBase;
 import com.swd.bike.dto.common.StatusResponse;
+import com.swd.bike.dto.message.UpdateLocationRequest;
 import com.swd.bike.dto.notification.request.SendNotificationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,4 +18,7 @@ public interface ITestController {
     @Operation(summary = "Push Notification")
     ResponseEntity<ResponseBase<StatusResponse>> send(@RequestBody SendNotificationRequest request);
 
+    @PostMapping("/update-location")
+    @Operation(summary = "UpdateLocation")
+    ResponseEntity<ResponseBase<StatusResponse>> send(@RequestBody UpdateLocationRequest request);
 }

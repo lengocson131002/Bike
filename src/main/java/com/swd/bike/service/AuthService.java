@@ -70,7 +70,7 @@ public class AuthService implements IAuthService {
 
         try {
             AccessToken token = TokenVerifier.create(accessTokenResponseCustom.getToken(), AccessToken.class).getToken();
-            Account account = accountService.getById(token.getSubject());
+            Account account = accountService.getBySubjectId(token.getSubject());
 
             //Create if there is no account
             if (account == null) {

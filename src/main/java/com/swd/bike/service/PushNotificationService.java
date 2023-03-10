@@ -2,6 +2,7 @@ package com.swd.bike.service;
 
 import com.swd.bike.common.BaseConstant;
 import com.swd.bike.dto.notification.dtos.NotificationDto;
+import com.swd.bike.dto.notification.dtos.NotificationMessage;
 import com.swd.bike.enums.Role;
 import com.swd.bike.kafka.KafkaProducer;
 import com.swd.bike.repository.AccountRepository;
@@ -24,30 +25,30 @@ public class PushNotificationService implements IPushNotificationService {
     private final AccountRepository accountRepository;
 
     @Async
-    boolean send(String topic, NotificationDto notification) {
-       try {
-           if (notification == null || topic == null) {
-               log.error("Send notification failed.");
-               return false;
-           }
-           return kafkaProducer.send(topic, notification);
-       } catch (Exception ex) {
-          log.error("Send notification failed {}", ex.getMessage());
-       }
-       return false;
+    boolean send(String topic, NotificationMessage notification) {
+        try {
+            if (notification == null || topic == null) {
+                log.error("Send notification failed.");
+                return false;
+            }
+            return kafkaProducer.send(topic, notification);
+        } catch (Exception ex) {
+            log.error("Send notification failed {}", ex.getMessage());
+        }
+        return false;
     }
 
 
     @Override
     public boolean sendPublic(NotificationDto notificationDto) {
         log.info("Send public message to topic: {}", BaseConstant.KAFKA_CHANNEL_PUBLIC);
-        return this.send(BaseConstant.KAFKA_CHANNEL_PUBLIC, notificationDto);
+        return this.send(BaseConstant.KAFKA_CHANNEL_PUBLIC, new NotificationMessage(null, notificationDto));
     }
 
     @Override
     public boolean sendTo(String accountId, NotificationDto notificationDto) {
         log.info("Send message to topic: {}", String.format(BaseConstant.KAFKA_CHANNEL_USER, accountId));
-        return this.send(String.format(BaseConstant.KAFKA_CHANNEL_USER, accountId), notificationDto);
+        return this.send(BaseConstant.KAFKA_CHANNEL_USER, new NotificationMessage(accountId, notificationDto));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class PushNotificationService implements IPushNotificationService {
     @Override
     public boolean sendToList(List<String> accountIds, NotificationDto notificationDto) {
         return accountIds.stream()
-                .filter(accountId -> !this.send(String.format(BaseConstant.KAFKA_CHANNEL_USER, accountId), notificationDto))
+                .filter(accountId -> !this.send(BaseConstant.KAFKA_CHANNEL_USER, new NotificationMessage(accountId, notificationDto)))
                 .collect(Collectors.toList()).size() == 0;
     }
 }

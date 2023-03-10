@@ -25,7 +25,7 @@ public class AccountService implements IAccountService {
     @Override
     @Caching(evict = {
             @CacheEvict(value = "account", key = "#account.id", condition = "#account != null && #account.id != null"),
-            @CacheEvict(value = "accounts", allEntries = true)
+            @CacheEvict(value = "accounts", allEntries = true),
     })
     public Account save(Account account) {
         return accountRepository.save(account);
@@ -39,19 +39,16 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    @Cacheable(value = "accountId", key = "#subjectId", condition = "#subjectId != null")
     public String getIdBySubjectId(String subjectId) {
         return accountRepository.findIdBySubjectId(subjectId).orElse(null);
     }
 
     @Override
-    @Cacheable(value = "accountSubjectId", key = "#subjectId", condition = "#subjectId != null")
     public Account getBySubjectId(String subjectId) {
-        return accountRepository.findBySubjectId(subjectId);
+        return accountRepository.findFirstBySubjectId(subjectId);
     }
 
     @Override
-    @Cacheable(value = "subjectIdOpt", key = "#subjectId", condition = "#subjectId != null")
     public Optional<String> getIdBySubjectIdOpt(String subjectId) {
         return accountRepository.findIdBySubjectId(subjectId);
     }

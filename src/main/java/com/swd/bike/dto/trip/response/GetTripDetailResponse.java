@@ -1,6 +1,7 @@
 package com.swd.bike.dto.trip.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swd.bike.common.BaseConstant;
 import com.swd.bike.core.BaseResponseData;
 import com.swd.bike.enums.TripStatus;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,7 @@ public class GetTripDetailResponse extends BaseResponseData {
     public String startStationName;
     public Long endStationId;
     public String endStationName;
+
+    @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     public LocalDateTime postedStartTime;
 }

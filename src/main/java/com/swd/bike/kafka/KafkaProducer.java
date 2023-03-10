@@ -1,6 +1,6 @@
 package com.swd.bike.kafka;
 
-import com.swd.bike.dto.notification.dtos.NotificationDto;
+import com.swd.bike.dto.kafka.KafkaMessage;
 import com.swd.bike.util.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
 
-    public boolean send(String topic, NotificationDto message) {
+    public boolean send(String topic, KafkaMessage message) {
 
         ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, JsonUtil.INSTANCE.getJsonString(message));
 
