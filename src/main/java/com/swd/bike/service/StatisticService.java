@@ -30,7 +30,7 @@ public class StatisticService implements IStatisticService {
     private final PostRepository postRepository;
     @Override
     public StatisticModel getStatistics(LocalDateTime from, LocalDateTime to) {
-        List<Account> accounts = accountRepository.findDistinctTop5ByCreatedAtBetweenOrderByAveragePointDesc(from, to);
+        List<Account> accounts = accountRepository.findDistinctTop5ByRoleAndCreatedAtBetweenOrderByAveragePointDesc(Role.USER, from, to);
         int numOfWaitingVehicle = vehicleRepository.countByStatusAndCreatedAtBetween(VehicleStatus.WAITING, from, to);
         int numOfTrip = tripRepository.countByCreatedAtBetween(from, to);
         List<Post> posts = postRepository.findAllByCreatedAtBetween(from, to);
