@@ -70,7 +70,6 @@ public class KafkaConsumer {
             return;
         }
 
-        // Push notification to user
         template.convertAndSend(String.format("/trip/%s/location", trip.getId()), new UpdateLocationResponse(updateLocationMessage));
     }
 

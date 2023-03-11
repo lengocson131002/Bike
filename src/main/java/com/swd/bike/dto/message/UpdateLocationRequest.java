@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateLocationRequest extends KafkaMessage {
+    private Long tripId;
     private Float latitude;
     private Float longitude;
 }
