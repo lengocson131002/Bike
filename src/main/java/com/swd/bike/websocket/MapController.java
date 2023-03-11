@@ -11,8 +11,6 @@ import com.swd.bike.service.interfaces.ITripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -25,8 +23,6 @@ public class MapController {
     private final KafkaProducer kafkaProducer;
     private final ContextService contextService;
     private final ITripService tripService;
-    @Autowired
-    private KafkaAdmin kafkaAdmin;
 
     @MessageMapping("/update-location")
     public void updateLocation(@Payload UpdateLocationRequest request, @Header(HttpHeaders.AUTHORIZATION) String token) {
@@ -39,9 +35,9 @@ public class MapController {
             log.error("Account not found");
             return;
         }
-        Trip trip = tripService.getCurrentTrip(account);
+        Trip trip = tripService.getTrip(request.getTripId());
         if (trip == null) {
-            log.error("Current trip not found");
+            log.error("Trip not found");
             return;
         }
 
