@@ -7,6 +7,7 @@ import com.swd.bike.enums.TripStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -49,4 +50,16 @@ public interface TripRepository extends JpaRepository<Trip, Long>,
     Optional<Trip> findById(@Param("id") Long id);
 
     int countByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "grabber",
+                    "passenger",
+                    "startStation",
+                    "endStation",
+                    "post"
+            }
+    )
+    Page<Trip> findAll(Specification<Trip> specification, Pageable pageable);
 }

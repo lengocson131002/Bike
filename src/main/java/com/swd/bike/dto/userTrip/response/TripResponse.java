@@ -3,8 +3,11 @@ package com.swd.bike.dto.userTrip.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.swd.bike.common.BaseConstant;
 import com.swd.bike.core.BaseResponseData;
+import com.swd.bike.entity.Account;
+import com.swd.bike.entity.Post;
 import com.swd.bike.entity.Station;
 import com.swd.bike.entity.Trip;
+import com.swd.bike.enums.TripRole;
 import com.swd.bike.enums.TripStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +40,10 @@ public class TripResponse extends BaseResponseData {
     private String endStation;
     @JsonFormat(pattern = BaseConstant.UTC_TIMEZONE_FORMAT)
     private LocalDateTime postedStartTime;
+    private String passengerId;
+    private String passengerName;
+    private String grabberId;
+    private String grabberName;
 
     public TripResponse(Trip trip)  {
         assert trip != null;
@@ -61,6 +68,17 @@ public class TripResponse extends BaseResponseData {
         if (eStation != null) {
             endStationId = eStation.getId();
             endStation = eStation.getName();
+        }
+
+        Account grabber = trip.getGrabber();
+        if (grabber != null) {
+            grabberId = grabber.getId();
+            grabberName = grabber.getName();
+        }
+        Account passenger = trip.getPassenger();
+        if (passenger != null) {
+            passengerId = passenger.getId();
+            passengerName = passenger.getName();
         }
     }
 }
