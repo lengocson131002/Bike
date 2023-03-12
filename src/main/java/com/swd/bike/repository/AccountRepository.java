@@ -23,7 +23,7 @@ public interface AccountRepository extends JpaRepository<Account, String>, JpaSp
 
     @Query("SELECT a.id FROM Account a WHERE a.subjectId = ?1")
     Optional<String> findIdBySubjectId(String id);
-    List<Account> findDistinctTop5ByCreatedAtBetweenOrderByAveragePointDesc(LocalDateTime from, LocalDateTime to);
+    List<Account> findDistinctTop5ByRoleAndCreatedAtBetweenOrderByAveragePointDesc(Role role, LocalDateTime from, LocalDateTime to);
 
     int countAccountsByIsUpdatedAndRoleAndCreatedAtBetween(boolean isUpdated, Role role, LocalDateTime from, LocalDateTime to);
     Account findFirstBySubjectId(String subjectId);

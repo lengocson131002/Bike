@@ -4,6 +4,7 @@ import com.swd.bike.entity.Vehicle;
 import com.swd.bike.repository.VehicleRepository;
 import com.swd.bike.service.interfaces.IVehicleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class VehicleService implements IVehicleService {
     private final VehicleRepository vehicleRepository;
 
+    @CacheEvict(value = "account", key = "#vehicle.owner.id", condition = "#vehicle != null && #vehicle.owner.id != null && #vehicle.owner != null")
     public Vehicle save(Vehicle vehicle) {
         return vehicleRepository.save(vehicle);
     }

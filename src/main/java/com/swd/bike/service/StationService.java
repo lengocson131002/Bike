@@ -29,7 +29,8 @@ public class StationService implements IStationService {
     @Caching(evict = {
             @CacheEvict(cacheNames = {"station"}, key = "#station.id", condition = "#station.id != null"),
             @CacheEvict(cacheNames = "pageStation", allEntries = true),
-            @CacheEvict(cacheNames = "listStation", allEntries = true)
+            @CacheEvict(cacheNames = "listStation", allEntries = true),
+            @CacheEvict(cacheNames = "activeStationList", allEntries = true)
     })
     public Station createOrUpdate(Station station) {
         return stationRepository.save(station);
@@ -102,11 +103,13 @@ public class StationService implements IStationService {
     }
 
     @Override
+    @Cacheable(cacheNames = "activeStationList")
     public List<Station> getAllActiveStations() {
         return stationRepository.findAllByStatus(StationStatus.ACTIVE);
     }
 
     @Override
+    @Cacheable(cacheNames = "activeStationList", key = "#fromStationId")
     public List<Station> getAllActiveStations(Long fromStationId) {
         if (fromStationId == null) {
             return getAllActiveStations();
