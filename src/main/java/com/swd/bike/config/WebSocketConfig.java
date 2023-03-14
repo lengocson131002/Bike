@@ -14,13 +14,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Value("${bike.client-url}")
     private String clientUrl;
+    @Value("${bike.client-url-host}")
+    private String clientUrlHost;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns(clientUrl).withSockJS();
+                .setAllowedOriginPatterns(clientUrl, clientUrlHost).withSockJS();
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns(clientUrl);
+                .setAllowedOriginPatterns(clientUrl, clientUrlHost);
     }
 
     @Override
