@@ -98,7 +98,7 @@ trip_remind_time: ${TRIP_REMIND_TIME_IN_MINUTES:5}
 # APP VARIABLES
 ##########################
 bike:
-  client-url: ${CLIENT_URL:http://localhost:3000/}
+  client-url: ${CLIENT_URL:*}
 
 ##########################
 # AWS
