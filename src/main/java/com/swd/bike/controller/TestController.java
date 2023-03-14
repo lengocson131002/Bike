@@ -35,7 +35,6 @@ public class TestController extends BaseController implements ITestController {
 
     @Override
     public ResponseEntity<ResponseBase<StatusResponse>> send(UpdateLocationRequest request) {
-        System.out.println(request.toString());
         Account account = contextService.getLoggedInUser();
         if (account == null) {
             log.error("Account not found");
