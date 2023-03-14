@@ -99,6 +99,7 @@ trip_remind_time: ${TRIP_REMIND_TIME_IN_MINUTES:5}
 ##########################
 bike:
   client-url: ${CLIENT_URL:*}
+  client-url-host: ${CLIENT_URL:http://54.254.255.27:3000/}
 
 ##########################
 # AWS
