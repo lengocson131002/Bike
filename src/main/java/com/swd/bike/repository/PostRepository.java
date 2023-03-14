@@ -4,10 +4,8 @@ import com.swd.bike.entity.Post;
 import com.swd.bike.enums.PostStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -42,4 +40,14 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     Optional<Post> findById(@Param("id") Long id);
 
     List<Post> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "author",
+                    "startStation",
+                    "endStation"
+            }
+    )
+    Page<Post> findAll(Specification<Post> specification, Pageable pageable);
 }

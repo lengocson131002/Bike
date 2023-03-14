@@ -23,7 +23,7 @@ public class GetAllTripsHandler extends RequestHandler<GetAllTripsRequest, PageR
     @Override
     @Transactional
     @Cacheable(value = "pageTrips", key = "#request.toString()", condition = "#request != null")
-    public PageResponse<TripResponse> handle(GetAllTripsRequest request) {
+        public PageResponse<TripResponse> handle(GetAllTripsRequest request) {
         Page<Trip> pageResult = tripService.getAllTrip(request.getSpecification(), request.getPageable());
         PageResponse<TripResponse> response = new PageResponse<>(pageResult);
         response.setItems(pageResult.getContent()
