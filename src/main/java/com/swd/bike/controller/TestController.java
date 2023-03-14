@@ -35,13 +35,12 @@ public class TestController extends BaseController implements ITestController {
 
     @Override
     public ResponseEntity<ResponseBase<StatusResponse>> send(UpdateLocationRequest request) {
-        System.out.println(request.toString());
         Account account = contextService.getLoggedInUser();
         if (account == null) {
             log.error("Account not found");
             throw new InternalException(ResponseCode.ACCOUNT_NOT_FOUND);
         }
-        Trip trip = tripService.getCurrentTrip(account);
+        Trip trip = tripService.getTrip(request.getTripId());
         if (trip == null) {
             log.error("Current trip not found");
             throw new InternalException(ResponseCode.TRIP_ERROR_NOT_FOUND);
