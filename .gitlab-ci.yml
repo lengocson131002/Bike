@@ -7,7 +7,6 @@ services:
   - docker:19.03.7-dind
 stages:
   - build jar
-  - test
   - build and push docker image
   - deploy
 
@@ -22,16 +21,9 @@ build:
     - ./gradlew build
     - echo $TEST
     - echo $SECRET
-    
-  tags:
-    - docker
-
-test:
-  image: openjdk:11
-  stage: test
-  script:
-    - chmod +x ./gradlew
-    - ./gradlew test
+  artifacts:
+    paths:
+      - build/libs/*.jar    
   tags:
     - docker
 
