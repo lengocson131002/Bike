@@ -22,9 +22,7 @@ build:
     - ./gradlew build
     - echo $TEST
     - echo $SECRET
-  artifacts:
-    paths:
-      - build/libs/*.jar
+    
   tags:
     - docker
 
